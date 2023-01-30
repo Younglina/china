@@ -1,6 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/index'
+import './utils/flexible.js'
+
 // 导入Unocss
 import 'uno.css'
 createApp(App).use(router).mount('#app')

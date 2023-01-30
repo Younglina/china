@@ -10,8 +10,8 @@ const toHome = () => {
 
 <template>
   <div>
-    home
-    <div p-5 text-red i-mdi-food-takeout-box></div>
+    <div>home</div>
+    <div text-red i-mdi-food-takeout-box></div>
     <button @click="toHome">asdf</button>
   </div>
 </template>
