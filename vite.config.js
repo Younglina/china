@@ -10,6 +10,7 @@ import autoprefixer from 'autoprefixer'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/china',
   plugins: [
     vue(),
     Unocss({ // 使用Unocss
