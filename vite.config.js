@@ -1,9 +1,6 @@
 import { defineConfig } from 'vite'
 import path from 'path'
 import vue from '@vitejs/plugin-vue'
-// 引入Unocss
-import Unocss from 'unocss/vite';
-import { presetUno, presetAttributify, presetIcons } from 'unocss'
 //自适应
 import postCssPxToRem from "postcss-pxtorem"
 import autoprefixer from 'autoprefixer'
@@ -19,13 +16,7 @@ export default defineConfig({
     vue(),
     Components({
       resolvers: [VantResolver()],
-    }),
-    Unocss({ // 使用Unocss
-      presets: [
-        presetUno(),
-        presetAttributify(),
-        presetIcons()],
-    }),
+    })
   ],
   css: {
     postcss: {
