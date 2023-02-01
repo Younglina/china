@@ -1,12 +1,18 @@
 <script setup>
 import CommonCard from '@/components/CommonCard.vue'
 import { scenicArea, navCard } from '@/utils/useData.js'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const toView = (key) => {
+  router.push(`/preview?type=${key}`)
+}
 </script>
 
 <template>
   <main class="home-page">
     <van-swipe class="home-swipe" lazy-render autoplay="3000">
-      <van-swipe-item v-for="item in scenicArea" :key="item">
+      <van-swipe-item v-for="item in scenicArea" :key="item.name">
         <img
           class="home-swipe__image"
           :src="item.images[0]"
@@ -14,7 +20,7 @@ import { scenicArea, navCard } from '@/utils/useData.js'
       </van-swipe-item>
     </van-swipe>
     <div class="home-page__nav">
-      <div v-for="item in navCard" :key="item.type">
+      <div v-for="item in navCard" :key="item.key" @click="toView(item.key)">
         <img :src="item.image"/>
         <p>{{ item.type }}</p>
       </div>
@@ -27,7 +33,6 @@ import { scenicArea, navCard } from '@/utils/useData.js'
 .home-page{
   height: 100vh;
   width: 100vw;
-  padding: 10px;
   box-sizing: border-box;
   // background-image: url(../assets/images/bg.jpg);
   // background-repeat: no-repeat;

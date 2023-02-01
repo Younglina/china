@@ -1,5 +1,4 @@
 <script setup>
-import { useRouter } from 'vue-router'
 import { scenicArea } from '@/utils/useData.js'
 
 const props = defineProps({
@@ -8,21 +7,17 @@ const props = defineProps({
 // const emit = defineEmits(['toPage'])
 // emit('toPage', {})
 
-const router = useRouter()
-const toPage = () => {
-  router.push(`/page${props.cardType}`)
-}
 </script>
 
 <template>
   <div class="common-card">
-    <p class="wy-title" @click="toPage">热门景点<van-icon name="arrow" /></p>
+    <p class="wy-title">热门景点<van-icon name="arrow" /></p>
     <div class="card-body">
       <div v-for="item in scenicArea.slice(0,5)" class="card-body__item" :key="item.name">
         <img class="card-body__image" :src="item.images[0]" alt="">
         <p class="card-body__name">{{ item.name }}</p>
         <p class="card-body__desc">{{ item.desc }}</p>
-        <p class="card-body__tag">{{ item.tags.join('、') }}</p>
+        <!-- <p class="card-body__tag">{{ item.tags.join('、') }}</p> -->
       </div>
     </div>
   </div>
