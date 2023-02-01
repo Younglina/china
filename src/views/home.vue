@@ -1,41 +1,52 @@
 <script setup>
-
-import { useRouter } from 'vue-router'
-import { getStore } from '@/store'
-import { homeImages } from '@/utils/useImages.js'
-import { scenicArea } from '@/utils/useData.js'
-const router = useRouter()
-const store = getStore()
-const toHome = () => {
-  store.counter++
-  console.log(store.counter)
-  router.push('/page')
-}
-const urls = homeImages
+import CommonCard from '@/components/CommonCard.vue'
+import { scenicArea, navCard } from '@/utils/useData.js'
 </script>
 
 <template>
-  <main h-screen w-screen py-10px px-8px box-border>
-    <van-swipe class="home-swipe" lazy-render>
-      <van-swipe-item v-for="item in urls" :key="item">
+  <main class="home-page">
+    <van-swipe class="home-swipe" lazy-render autoplay="3000">
+      <van-swipe-item v-for="item in scenicArea" :key="item">
         <img
           class="home-swipe__image"
-          :src="item"
+          :src="item.images[0]"
         />
       </van-swipe-item>
     </van-swipe>
-    <div>
-      <span>热门景点</span>
-      <div>
-        <div v-for="item in scenicArea" :key="item.name">
-          <p>{{ item.name }}</p>
-        </div>
+    <div class="home-page__nav">
+      <div v-for="item in navCard" :key="item.type">
+        <img :src="item.image"/>
+        <p>{{ item.type }}</p>
       </div>
     </div>
+    <CommonCard card-type="scenic"/>
   </main>
 </template>
 
 <style lang="scss" scoped>  
+.home-page{
+  height: 100vh;
+  width: 100vw;
+  padding: 10px;
+  box-sizing: border-box;
+  // background-image: url(../assets/images/bg.jpg);
+  // background-repeat: no-repeat;
+  // background-size: 100% auto;
+  &__nav{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 16px 0;
+    img{
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+    }
+    p{
+      text-align: center;
+    }
+  }
+}
 :deep.home-swipe{
   &__image{
     object-position: center center;
