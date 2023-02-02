@@ -33,6 +33,7 @@ const toView = (key) => {
 .home-page{
   height: 100vh;
   width: 100vw;
+  padding: 10px;
   box-sizing: border-box;
   // background-image: url(../assets/images/bg.jpg);
   // background-repeat: no-repeat;
