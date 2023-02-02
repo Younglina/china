@@ -2,17 +2,15 @@
 import { scenicArea } from '@/utils/useData.js'
 import { guide } from '@/utils/useMap.js'
 import { useRouter, useRoute } from 'vue-router'
-import { ref, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 
 const router = useRouter()
 const route = useRoute()
 
-let detailData = ref({})
-onMounted(() => {
-  const queryName = route.query.name
-  const curData = scenicArea.find(item => item.name === queryName)
-  detailData = curData || {}
-})
+let detailData = reactive({})
+const queryName = route.query.name
+const curData = scenicArea.find(item => item.name === queryName)
+detailData = curData || {}
 </script>
 
 <template>
@@ -22,10 +20,12 @@ onMounted(() => {
         <img class="home-swipe__image" :src="item" />
       </van-swipe-item>
     </van-swipe>
-    <h3>{{ address }}</h3>
-    <p>{{ detailData.intorduction }}</p>
-    <div>
-      <button @click="guide('gd', detailData)">123123</button>
+    <div class="detail-info">
+      <p class="detail-info__title">{{ detailData.name }}</p>
+      <p>{{ detailData.intorduction }}</p>
+      <div>
+        <button @click="guide('gd', detailData)">123123</button>
+      </div>
     </div>
   </main>
 </template>
@@ -41,6 +41,18 @@ onMounted(() => {
 
   .van-swipe__track {
     align-items: center
+  }
+}
+.detail-info{
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: #ffffff;
+  margin: 0 10px;
+  padding: 10px;
+  &__title{
+    font-size: 20px;
+    padding-bottom: 10px;
+    font-weight: bold;
   }
 }
 </style>

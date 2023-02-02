@@ -1,20 +1,17 @@
-@font-face {
-  /*给字体命名*/
-  font-family: 'zhushiti';
-  /*引入字体文件*/
-  src: url('./assets/zhushiti.ttf');
+/* @font-face {
+  font-family: 'AozoraMinchoMedium-2';
+  src: url('./assets/AozoraMinchoMedium-2.ttf');
   font-weight: normal;
   font-style: normal;
-}
+} */
 
 html,body,p{
-  font-family: zhushiti, apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Segoe UI, Arial, Roboto, "PingFang SC", "miui", "Hiragino Sans GB", "Microsoft Yahei", sans-serif !important;
+  font-family: sans-serif;
   margin: 0;
 }
 body{
   background-color: #f8f9fd;
   color: #333;
-  padding: 10px;
 }
 .wy-title{
   padding: 4px;

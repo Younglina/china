@@ -37,6 +37,7 @@ console.log(route.query)
 
 <style lang="scss" scoped>
   .preview-page{
+    padding: 10px;
     .card{
       display: grid;
       grid-template-columns: 1fr 1fr;
