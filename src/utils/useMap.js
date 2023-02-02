@@ -7,7 +7,7 @@ export function guide(signMap, detailData) {
     // 高德地图
     if (customBrowserVersion().android) {
       window.location.href = "androidamap://viewMap?sourceApplication=appname&poiname=" + address +
-        "&lat=" + lat + "&lon=" + lng + "&dev=0";
+        "&lat=" + lat + "&lon=" + lng;
       //判断是否跳转
       setTimeout(function () {
         let hidden = window.document.hidden || window.document.mozHidden || window.document.msHidden ||
@@ -38,7 +38,8 @@ export function guide(signMap, detailData) {
       //安卓操作系统
       let d = new Date();
       let t0 = d.getTime();
-      window.location.href = "androidamap://viewMap?sourceApplication=appname&poiname=" + address + "&dev=0";
+      window.location.href = "baidumap://map/marker?content=" + address+
+      "&lat=" + lat + "&lon=" + lng;
       //由于打开需要1～2秒，利用这个时间差来处理－－打开app后，返回h5页面会出现页面变成app下载页面，影响用户体验
       var delay = setInterval(function () {
         var d = new Date();
@@ -55,7 +56,7 @@ export function guide(signMap, detailData) {
       //ios操作系统
       let d = new Date();
       let t0 = d.getTime();
-      window.location.href = "iosamap://viewMap?sourceApplication=appname&poiname=" + address + "&dev=0";
+      window.location.href = "iosbaidumap://map/marker?content=" + address;
       //由于打开需要1～2秒，利用这个时间差来处理－－打开app后，返回h5页面会出现页面变成app下载页面，影响用户体验
       let delay = setInterval(function () {
         var d = new Date();

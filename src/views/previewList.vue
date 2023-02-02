@@ -74,10 +74,10 @@ console.log(route.query)
           justify-content: space-between;
         }
         &__wenli{
-          width: 24px;
-          height: 24px;
-          top: 148px;
-          left: calc(50% - 12px);
+          width: 26px;
+          height: 26px;
+          top: 146px;
+          left: calc(50% - 13px);
           background-color: #fff;
           border-radius: 50%;
           border: 1px solid #fff;
