@@ -8,67 +8,46 @@ export function guide(signMap, detailData) {
     if (customBrowserVersion().android) {
       window.location.href = "androidamap://viewMap?sourceApplication=appname&poiname=" + address +
         "&lat=" + lat + "&lon=" + lng;
-      //判断是否跳转
-      setTimeout(function () {
-        let hidden = window.document.hidden || window.document.mozHidden || window.document.msHidden ||
-          window.document.webkitHidden
-        if (typeof hidden == "undefined" || hidden == false) {
-          //调用高德地图
-          window.location.href = "https://uri.amap.com/marker?position=" + lng + "," + lat +
-            "&name=" + address;
-        }
-      }, 2000);
     } else if (customBrowserVersion().ios) {
       window.location.href = "iosamap://viewMap?sourceApplication=appname&poiname=" + address +
         "&lat=" + lat + "&lon=" + lng + "&dev=0";
-      //判断是否跳转
-      setTimeout(function () {
-        let hidden = window.document.hidden || window.document.mozHidden || window.document.msHidden ||
-          window.document.webkitHidden
-        if (typeof hidden == "undefined" || hidden == false) {
-          //调用高德地图
-          window.location.href = "https://uri.amap.com/marker?position=" + lng + "," + lat +
-            "&name=" + address;
-        }
-      }, 2000);
     }
+    //判断是否跳转
+    setTimeout(function () {
+      let hidden = window.document.hidden || window.document.mozHidden || window.document.msHidden ||
+        window.document.webkitHidden
+      if (typeof hidden == "undefined" || hidden == false) {
+        //调用高德地图
+        window.location.href = "https://uri.amap.com/marker?position=" + lng + "," + lat +
+          "&name=" + address;
+      }
+    }, 2000);
   } else if (signMap == 'bd') {
     // 百度地图
     if (customBrowserVersion().android) {
       //安卓操作系统
       let d = new Date();
       let t0 = d.getTime();
-      window.location.href = "baidumap://map/marker?content=" + address+
-      "&lat=" + lat + "&lon=" + lng;
-      //由于打开需要1～2秒，利用这个时间差来处理－－打开app后，返回h5页面会出现页面变成app下载页面，影响用户体验
-      var delay = setInterval(function () {
-        var d = new Date();
-        var t1 = d.getTime();
-        if (t1 - t0 < 3000 && t1 - t0 > 2000) {
-          window.location.href = `http://api.map.baidu.com/geocoder?address=${address}&output=html`;
-        }
-        if (t1 - t0 >= 3000) {
-          clearInterval(delay);
-        }
-      }, 1000);
+      window.location.href = "baidumap://map/marker?content=" + address +
+        "&lat=" + lat + "&lon=" + lng;
     }
     if (customBrowserVersion().ios) {
       //ios操作系统
       let d = new Date();
       let t0 = d.getTime();
-      window.location.href = "iosbaidumap://map/marker?content=" + address;
-      //由于打开需要1～2秒，利用这个时间差来处理－－打开app后，返回h5页面会出现页面变成app下载页面，影响用户体验
-      let delay = setInterval(function () {
-        var d = new Date();
-        var t1 = d.getTime();
-        if (t1 - t0 < 3000 && t1 - t0 > 2000) {
-          window.location.href = `http://api.map.baidu.com/geocoder?address=${address}&output=html`;
-        }
-        if (t1 - t0 >= 3000) {
-          clearInterval(delay);
-        }
-      }, 1000);
+      window.location.href = "iosbaidumap://map/marker?content=" + address + "&lat=" + lat + "&lon=" + lng;
     }
+    //由于打开需要1～2秒，利用这个时间差来处理－－打开app后，返回h5页面会出现页面变成app下载页面，影响用户体验
+    var delay = setInterval(function () {
+      var d = new Date();
+      var t1 = d.getTime();
+      if (t1 - t0 < 3000 && t1 - t0 > 2000) {
+        window.location.href = `http://api.map.baidu.com/geocoder?address=${address}&output=html`;
+      }
+      if (t1 - t0 >= 3000) {
+        clearInterval(delay);
+      }
+    }, 1000);
   }
 }
 //区分设备
