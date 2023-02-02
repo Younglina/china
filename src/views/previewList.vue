@@ -3,8 +3,8 @@ import { useRouter, useRoute } from 'vue-router'
 import { scenicArea, navCard } from '@/utils/useData.js'
 const router = useRouter()
 const route = useRoute()
-const toHome = () => {
-  router.push('/')
+const toDetail = (name) => {
+  router.push({path: '/detail',query: {name}})
 }
 console.log(route.query)
 </script>
@@ -13,10 +13,14 @@ console.log(route.query)
   <main class="preview-page">
     <h3>一个介绍</h3>
     <div class="card">
-      <div v-for="item in scenicArea" class="card-item" :key="item.name">
+      <div v-for="item in scenicArea" class="card-item" :key="item.name" @click="toDetail(item.name)">
         <img
           class="card-item__image"
           :src="item.images[0]"
+        />
+        <img
+          class="card-item__wenli"
+          src="../assets/images/wenli_1.png"
         />
         <div class="card-item__info">
           <p class="card-item__name">{{ item.name }}</p>
@@ -36,33 +40,47 @@ console.log(route.query)
     .card{
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 50px 16px;
+      gap: 40px 16px;
       &-item{
+        position: relative;
         &__image{
           width: 100%;
-          height: 180px;
+          height: 160px;
+          margin-bottom: 12px;
           object-fit: cover;
-          border-top-left-radius: 50%;
-          border-top-right-radius: 50%;
+          border-radius: 6px;
+          // border-top-left-radius: 50%;
+          // border-top-right-radius: 50%;
+        }
+        p{
+          padding: 3px 0;
         }
         &__info{
           display: flex;
           flex-direction: column;
+          justify-content: space-between;
           height: calc(100% - 180px);
-        }
-        p {
-          padding: 3px 0;
         }
         &__name{
           font-weight: 600;
         }
         &__desc{
-          flex: 1;
+          color: #555;
         }
         &__tag{
           color: #888;
           display: flex;
           justify-content: space-between;
+        }
+        &__wenli{
+          width: 24px;
+          height: 24px;
+          top: 148px;
+          left: calc(50% - 12px);
+          background-color: #fff;
+          border-radius: 50%;
+          border: 1px solid #fff;
+          position: absolute;
         }
       }
     }
