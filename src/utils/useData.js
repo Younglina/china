@@ -21,6 +21,11 @@ import flch_1 from '@/assets/images/flch_1.jpeg'
 import flch_2 from '@/assets/images/flch_2.jpeg'
 import huahai_1 from '@/assets/images/huahai_1.jpeg'
 
+//导航
+import game from '@/assets/svg/game.svg'
+import food from '@/assets/svg/food.svg'
+import scenic from '@/assets/svg/scenic.svg'
+
 export const scenicArea = [
   {
     name: '景德镇中国陶瓷博物馆',
@@ -80,7 +85,7 @@ export const scenicArea = [
     address: '江西省景德镇市珠山区新厂西路150号',
     desc: '国际陶瓷文化产业园',
     intorduction: '陶溪川文创街区坐落于景德镇市东城，总规划面积2平方公里，建有陶瓷工业遗产博物馆、美术馆、陶公塾教育研学基地、邑空间双创平台、国际工作室等。植入多元业态，凸显文化内核。',
-    images: [txc_1,txc_2,txc_3]
+    images: [txc_1, txc_2, txc_3]
   },
   {
     name: '高龄·中国村',
@@ -92,12 +97,12 @@ export const scenicArea = [
     address: '江西省景德镇市浮梁县鹅湖镇东北部',
     desc: '“国家级田园综合体”',
     intorduction: '按照“一环两带，六园一区”的空间布局。重点建设一条13.6公里长的旅游观光环路，东西两条滨水风光带，以及浮梁茶海、高岭花海、香樟林海、村长学院、智慧农园、界田小村等六大片区和一个游客综合服务区。集生态农业、瓷茶文旅、论坛培训、运动康养、旅居文创等功能业态于一体的“国家级田园综合体”',
-    images: [dtcs_2, huahai_1,dtcs_1,flch_1,flch_2]
+    images: [dtcs_2, huahai_1, dtcs_1, flch_1, flch_2]
   }
 ]
 
 export const navCard = [
-  { type: '吃', key: 'eat', image: gy_1 },
-  { type: '娱乐', key: 'paly', image: gy_1 },
-  { type: '观赏', key: 'view', image: gy_1 },
+  { type: '美食', key: 'eat', image: food },
+  { type: '娱乐', key: 'paly', image: game },
+  { type: '景点', key: 'view', image: scenic },
 ]
