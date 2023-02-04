@@ -19,7 +19,6 @@ Http.interceptors.request.use(
 // 后置拦截器（获取到响应时的拦截）
 Http.interceptors.response.use(
   response => {
-    console.log(response, 'response')
     if (response.data.code !== 200) {
       console.error(
         `Code: ${response.data.code}, Message: ${response.data.msg}`,

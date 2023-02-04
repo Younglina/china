@@ -1,25 +1,34 @@
 <script setup>
-import { scenicArea } from '@/utils/useData.js'
+import { getStore } from '@/store'
 import { guide } from '@/utils/useMap.js'
 import { useRouter, useRoute } from 'vue-router'
-import { reactive, ref, onBeforeMount } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import Http from '@/utils/request.js'
 const router = useRouter()
 const route = useRoute()
 
-let detailData = ref({})
-let isLike = ref(false)
-let message = ref('')
-const queryName = route.query.name
-const curData = scenicArea.find(item => item.name === queryName)
+let detailData = ref({}) // 数据详情
+let isLike = ref(false) // 是否喜欢
+let message = ref('') // 留言
+let showMore = ref(false) // 查看更多
+const store = getStore()
+
+// 获取对应的数据详情
+const { name, dataType } = route.query
+const scenicArea = store[dataType]
+const curData = scenicArea.find(item => item.key === name)
+console.log(store[dataType], curData)
 detailData.value = curData || {}
 
+// 地图导航
 const actions = [{ name: '高德地图', type: 'gd' }, { name: '百度地图', type: 'bd' }]
 const showAction = ref(false)
 const onSelect = (v) => {
   console.log(v)
   guide(v.type, detailData)
 }
+
+// 评论相关
 const randomAvatar = ['linear-gradient(to top, #c471f5 0%, #fa71cd 100%)', 'linear-gradient(to top, #48c6ef 0%, #6f86d6 100%)', 'linear-gradient(to right, #f78ca0 0%, #f9748f 19%, #fd868c 60%, #fe9a8b 100%)', 'linear-gradient(to top, #feada6 0%, #f5efef 100%)', 'linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%)', 'linear-gradient(to top, #accbee 0%, #e7f0fd 100%)', 'linear-gradient(to right, #74ebd5 0%, #9face6 100%)',]
 let aryCommend = ref([])
 onBeforeMount(() => {
@@ -53,7 +62,16 @@ onBeforeMount(() => {
         <van-action-sheet v-model:show="showAction" :actions="actions" @select="onSelect" />
       </div>
       <div class="detail-info">
-        <p class="detail-info__intor">{{ detailData.intorduction }}</p>
+        <p class="wy-title">介绍</p>
+        <p class="detail-info__intor">{{ detailData.intorduction.slice(0, 50) + '...' }}</p>
+        <div class="detail-info__showmore" @click="showMore = !showMore">
+          <p>查看更多</p>
+        </div>
+        <van-popup v-model:show="showMore" round position="bottom" :style="{ height: '50%', padding: '20px' }">
+          <p style="text-indent: 2em">{{
+            detailData.intorduction
+          }}</p>
+        </van-popup>
       </div>
       <div class="detail-info">
         <van-field v-model="message" style="margin-bottom: 10px;" label="留言" placeholder="说点什么吧~" />
@@ -78,7 +96,7 @@ onBeforeMount(() => {
   &__image {
     object-position: center center;
     object-fit: cover;
-    height: 7rem;
+    height: 46vh;
     width: 100%;
   }
 
@@ -106,6 +124,7 @@ onBeforeMount(() => {
 }
 
 .detail-info {
+  position: relative;
   border-radius: 12px;
   background-color: #ffffff;
   padding: 10px;
@@ -143,6 +162,14 @@ onBeforeMount(() => {
     -webkit-line-clamp: 3;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  &__showmore {
+    position: absolute;
+    bottom: 10px;
+    right: 6px;
+    font-size: 12px;
+    color: #1989fa;
   }
 }
 
