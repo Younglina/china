@@ -1,16 +1,17 @@
 <script setup>
 import CommonCard from '@/components/CommonCard.vue'
-import { scenicArea, navCard } from '@/utils/useData.js'
+import { getData, navCard } from '@/utils/useData.js'
 import { useRouter } from 'vue-router'
-import Http from '@/utils/request.js'
-
-// Http.get('/scenic').then(res => {
-//   console.log(res)
-// })
+import { ref } from 'vue'
 const router = useRouter()
 const toView = (key) => {
   router.push(`/preview?type=${key}`)
 }
+const scenicArea = ref([])
+getData('scenic').then(res => {
+  scenicArea.value = res
+  console.log(res)
+});
 </script>
 
 <template>
@@ -28,7 +29,7 @@ const toView = (key) => {
         <p>{{ item.type }}</p>
       </div>
     </div>
-    <CommonCard card-type="scenic" />
+    <CommonCard card-type="scenic" :card-data="scenicArea" />
   </main>
 </template>
 

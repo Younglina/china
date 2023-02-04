@@ -1,108 +1,46 @@
-//御窑厂
-import yyc_1 from '@/assets/images/yyc_1.jpeg'
-import yyc_2 from '@/assets/images/yyc_2.jpeg'
-import yyc_3 from '@/assets/images/yyc_3.jpeg'
-import yyc_4 from '@/assets/images/yyc_4.jpeg'
-//陶瓷博物馆
-import tcbwg_1 from '@/assets/images/tcbwg_1.jpg'
-//古窑
-import gy_1 from '@/assets/images/gy_1.jpeg'
-import gy_2 from '@/assets/images/gy_2.jpeg'
-//瑶里
-import yl_1 from '@/assets/images/yl_1.jpeg'
-//陶溪川
-import txc_1 from '@/assets/images/txc_1.jpeg'
-import txc_2 from '@/assets/images/txc_2.jpeg'
-import txc_3 from '@/assets/images/txc_3.jpeg'
-// 高岭
-import dtcs_1 from '@/assets/images/dtcs_1.jpeg'
-import dtcs_2 from '@/assets/images/dtcs_2.jpeg'
-import flch_1 from '@/assets/images/flch_1.jpeg'
-import flch_2 from '@/assets/images/flch_2.jpeg'
-import huahai_1 from '@/assets/images/huahai_1.jpeg'
-
-//导航
-import game from '@/assets/svg/game.svg'
-import food from '@/assets/svg/food.svg'
-import scenic from '@/assets/svg/scenic.svg'
-
-export const scenicArea = [
-  {
-    name: '景德镇中国陶瓷博物馆',
-    tags: ['昌江区', '博物馆'],
-    locat: '昌江区',
-    areaType: '博物馆',
-    lng: '117.17553',
-    lat: '29.29324',
-    address: '江西省景德镇市昌江区昌江开发区紫晶路北湖对面',
-    desc: '千年瓷都的历史辉煌',
-    intorduction: '景德镇中国陶瓷博物馆位于景德镇市昌江区紫晶北路1号，是国内第一家大型陶瓷专题博物馆，国家一级博物馆、全国节约型公共机构示范单位、全国科普教育基地、全国爱国主义教育示范基地、全国中小学生研学实践教育基地、海峡两岸交流基地。总占地面积5.9万多平方米，建筑面积3.2万平方米，由常设展厅、临时展厅、学术交流区、公共活动空间、休闲商务区、办公区、多功能区、库房区等组成，可满足收藏、展示、研究、培训和教育等各项功能需求。博物馆藏文物藏品自新石器时代陶器和汉唐以来各个不同历史时期的陶瓷名品佳作五万余件，其中国家珍贵文物1600余件，涵括了景德镇千年制瓷历史长河中的代表品种。特别是王步、珠山八友等近现代艺术陶瓷精品，该馆更是品类丰富、学术价值和艺术价值极高，为陶瓷历史文化研究提供了最可靠的实物依据。',
-    images: [tcbwg_1]
-  },
-  {
-    name: '古窑名俗博览区',
-    tags: ['昌江区', '5A景区'],
-    locat: '昌江区',
-    areaType: '5A景区',
-    lng: '117.184813',
-    lat: '29.28343',
-    address: '江西省景德镇市昌江区瓷都大道古窑路1号',
-    desc: '北看故宫·南访古窑',
-    intorduction: '古窑民俗博览区是全国唯一一家以陶瓷文化为主题的国家AAAAA级旅游景区、全国旅游标准化示范景区、全国科普教育基地、全国重点文物保护单位——镇窑、全国重点文物保护单位——明园、国家级非物质文化遗产项目名录——景德镇手工制瓷技艺、国家级非物质文化遗产项目名录——景德镇传统瓷窑作坊营造技艺、江西省第一家座落于城市中心的国家AAAAA级旅游景区。',
-    images: [gy_2, gy_1]
-  },
-  {
-    name: '瑶里景区',
-    tags: ['浮梁县', '4A景区'],
-    locat: '浮梁县',
-    areaType: '4A景区',
-    lng: '117.59507',
-    lat: '29.540636',
-    address: '江西省景德镇市浮梁县瑶里镇',
-    desc: '瓷之源、茶之乡、林之海',
-    intorduction: '瑶里，古名“窑里”，因是景德镇陶瓷发祥地而得名，远在唐代中叶，这里就有生产陶瓷的手工作坊。瑶里位于举世闻名的瓷都东北端，地处三大世界文化遗产(黄山、庐山、西递和宏村)的中心，素有“瓷之源，茶之乡，林之海”的美称，是国家重点风景名胜区、国家历史文化名镇、国家AAAA级风景区、国家矿山公园、国家森林公园、国家重点文物保护单位、国家自然与文化双遗产。',
-    images: [yl_1]
-  },
-  {
-    name: '御窑博物馆',
-    tags: ['珠山中路', '博物馆'],
-    locat: '珠山中路',
-    areaType: '博物馆',
-    lng: '117.206239',
-    lat: '29.296024',
-    address: '江西省景德镇市珠山区珠山中路187号',
-    desc: '御窑传承千年,景御留芳百世。',
-    intorduction: '明清两代的官窑，专门烧造宫廷用瓷，也包括朝廷对内外的赏赐和交换品。景德镇御窑厂始建于明代洪武二年（1369年），初设时有窑20座，宣德年间增至58座。厂内分工计23作，以封建的超经济强制为前提，采用协作形式进行生产。由于御窑厂集中了优秀的制瓷工匠，并可以不计工本地提高质量和创新品种，客观上促进了制瓷技术的进步和整个瓷业的发展。 ',
-    images: [yyc_3, yyc_2, yyc_1, yyc_4]
-  },
-  {
-    name: '陶溪川',
-    tags: ['珠山区', '4A景区'],
-    locat: '珠山区',
-    areaType: '4A景区',
-    lng: '117.236113',
-    lat: '29.295502',
-    address: '江西省景德镇市珠山区新厂西路150号',
-    desc: '国际陶瓷文化产业园',
-    intorduction: '陶溪川文创街区坐落于景德镇市东城，总规划面积2平方公里，建有陶瓷工业遗产博物馆、美术馆、陶公塾教育研学基地、邑空间双创平台、国际工作室等。植入多元业态，凸显文化内核。',
-    images: [txc_1, txc_2, txc_3]
-  },
-  {
-    name: '高龄·中国村',
-    tags: ['浮梁县', '景区'],
-    locat: '浮梁县',
-    areaType: '景区',
-    lng: '117.467392',
-    lat: '29.475731',
-    address: '江西省景德镇市浮梁县鹅湖镇东北部',
-    desc: '“国家级田园综合体”',
-    intorduction: '按照“一环两带，六园一区”的空间布局。重点建设一条13.6公里长的旅游观光环路，东西两条滨水风光带，以及浮梁茶海、高岭花海、香樟林海、村长学院、智慧农园、界田小村等六大片区和一个游客综合服务区。集生态农业、瓷茶文旅、论坛培训、运动康养、旅居文创等功能业态于一体的“国家级田园综合体”',
-    images: [dtcs_2, huahai_1, dtcs_1, flch_1, flch_2]
+import COS from "cos-js-sdk-v5";
+import Http from '@/utils/request.js'
+import { getStore } from '@/store'
+const ImageBaseUrl = 'https://younglina-1256042946.cos.ap-nanjing.myqcloud.com/'
+const myCos = new COS({
+  SecretId: import.meta.env.VITE_SID,
+  SecretKey: import.meta.env.VITE_SKEY,
+});
+const formatImages = (img, requestData) => {
+  const hashMap = {}
+  const imgName = img ? img.split('.')[0] : '' // 类似 asdf_1.jpeg 获取.之前的名字
+  let imgType = imgName ? imgName.split('_')[0] : ''
+  if (!imgType) return
+  if (!hashMap[imgType]) {
+    hashMap[imgType] = requestData.find(item => item.key.includes(imgType)) || 'noImages'
   }
-]
+  if (hashMap[imgType] !== 'noImages') {
+    hashMap[imgType].images.push(`${ImageBaseUrl}${img}`)
+  }
+}
+
+const CacheData = {}
+const store = getStore()
+export const getData = async (type) => {
+  if (CacheData[type]) return CacheData[type]
+  const { data: requestData } = await Http.get('/scenic')
+  const cosData = await myCos.getBucket({
+    Bucket: "younglina-1256042946",
+    Region: "ap-nanjing",
+    // Prefix: 'jdz/',           /* Prefix表示列出的object的key以prefix开始，非必须 */
+  });
+  const areaData = cosData.Contents
+  // const data = { Contents: [{ "Key": "bg.jpg", "LastModified": "2023-02-04T05:55:29.000Z", "ETag": "\"e68e53eb2037aed73419d2b1dffe6db6\"", "Size": "765034", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "dtcs_1.jpeg", "LastModified": "2023-02-04T05:55:29.000Z", "ETag": "\"3ee3414a7153194a5ce5e5341c9e0237\"", "Size": "627598", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "dtcs_2.jpeg", "LastModified": "2023-02-04T05:55:28.000Z", "ETag": "\"00b5b95509acc87adfb3bbb4428f91e1\"", "Size": "485932", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "flch_1.jpeg", "LastModified": "2023-02-04T05:55:29.000Z", "ETag": "\"a100375becc62a862368da44cbc306d6\"", "Size": "263747", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "flch_2.jpeg", "LastModified": "2023-02-04T05:55:29.000Z", "ETag": "\"8a342e0aa7d3eacde9930dc7a64ddae6\"", "Size": "416110", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "food.svg", "LastModified": "2023-02-04T05:55:44.000Z", "ETag": "\"07947abd61a6e17261cce0107158ca1b\"", "Size": "2157", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "game.svg", "LastModified": "2023-02-04T05:55:44.000Z", "ETag": "\"dec2eb77b048d46923fe042578cd481a\"", "Size": "1218", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "gy_1.jpeg", "LastModified": "2023-02-04T05:55:29.000Z", "ETag": "\"15f8552502699c71627d9e6ec354bf09\"", "Size": "104213", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "gy_2.jpeg", "LastModified": "2023-02-04T05:55:29.000Z", "ETag": "\"d1e0c13880a2dee0cf9b7fb53189c389\"", "Size": "133839", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "huahai_1.jpeg", "LastModified": "2023-02-04T05:55:30.000Z", "ETag": "\"805f1817067347e082de84bfa7c9ee73\"", "Size": "748033", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "location.png", "LastModified": "2023-02-04T05:55:29.000Z", "ETag": "\"8b58f6a524168315da13ef9d8bfd2311\"", "Size": "8027", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "scenic.svg", "LastModified": "2023-02-04T05:55:44.000Z", "ETag": "\"1ae22a1f5fa2d93d2f265e5e930119da\"", "Size": "2359", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "tcbwg_1.jpg", "LastModified": "2023-02-04T05:55:29.000Z", "ETag": "\"d7b62b8054e7926743fb522a687c9bcd\"", "Size": "62142", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "txc_1.jpeg", "LastModified": "2023-02-04T05:55:30.000Z", "ETag": "\"ea66ba36d9e2fc7af1f17aa48eb6df92\"", "Size": "491814", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "txc_2.jpeg", "LastModified": "2023-02-04T05:55:30.000Z", "ETag": "\"4286d5fc7d37c5f7fbbf0151bc81e016\"", "Size": "317724", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "txc_3.jpeg", "LastModified": "2023-02-04T05:55:30.000Z", "ETag": "\"cb788145a9d2b42df7f2ef627799c632\"", "Size": "328076", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "wenli_1.png", "LastModified": "2023-02-04T05:55:30.000Z", "ETag": "\"8fe36d40df691f6f818e1ca2600a62a6\"", "Size": "220463", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "wenli_2.png", "LastModified": "2023-02-04T05:55:30.000Z", "ETag": "\"2e416df27c522dadd8fa107fa9f38aeb\"", "Size": "106508", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "wenli_3.png", "LastModified": "2023-02-04T05:55:30.000Z", "ETag": "\"09af6b443bbedf51719f8235c4f15eb7\"", "Size": "473087", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "yl_1.jpeg", "LastModified": "2023-02-04T05:55:30.000Z", "ETag": "\"13697691db2a14eea2e11611019971c9\"", "Size": "76224", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "yyc_1.jpeg", "LastModified": "2023-02-04T05:55:30.000Z", "ETag": "\"1510742b7e8c7796e931b67ee1d06a00\"", "Size": "616557", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "yyc_2.jpeg", "LastModified": "2023-02-04T05:55:31.000Z", "ETag": "\"57a84e9b7141209b23563e5a432bf212\"", "Size": "1505676", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "yyc_3.jpeg", "LastModified": "2023-02-04T05:55:31.000Z", "ETag": "\"106196d1eedb3072b569940f5049e025\"", "Size": "845302", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }, { "Key": "yyc_4.jpeg", "LastModified": "2023-02-04T05:55:31.000Z", "ETag": "\"cd5f0686d272003e4c7b26ee9a4e45c2\"", "Size": "764587", "Owner": { "ID": "1256042946", "DisplayName": "1256042946" }, "StorageClass": "STANDARD" }] }
+  areaData.map(item => {
+    formatImages(item.Key, requestData)
+  })
+  store[type] = requestData
+  CacheData[type] = requestData
+  return requestData
+}
 
 export const navCard = [
-  { type: '美食', key: 'eat', image: food },
-  { type: '娱乐', key: 'paly', image: game },
-  { type: '景点', key: 'view', image: scenic },
+  { type: '美食', key: 'eat', image: `${ImageBaseUrl}food.svg` },
+  { type: '娱乐', key: 'paly', image: `${ImageBaseUrl}game.svg` },
+  { type: '景点', key: 'scenic', image: `${ImageBaseUrl}scenic.svg` },
 ]
