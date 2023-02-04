@@ -17,7 +17,6 @@ const store = getStore()
 const { name, dataType } = route.query
 const scenicArea = store[dataType]
 const curData = scenicArea.find(item => item.key === name)
-console.log(store[dataType], curData)
 detailData.value = curData || {}
 
 // 地图导航

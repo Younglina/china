@@ -10,7 +10,6 @@ const toView = (key) => {
 const scenicArea = ref([])
 getData('scenic').then(res => {
   scenicArea.value = res
-  console.log(res)
 });
 </script>
 

@@ -1,18 +1,21 @@
 <script setup>
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
   cardType: String,
   cardData: Array
 })
-// const emit = defineEmits(['toPage'])
-// emit('toPage', {})
+const router = useRouter()
+const toDetail = (name) => {
+  router.push({ path: '/detail', query: { name, dataType: props.cardType } })
+}
 </script>
 
 <template>
   <div class="common-card">
     <p class="wy-title">热门景点</p>
     <div class="card-body">
-      <div v-for="item in cardData.slice(0, 5)" class="card-body__item" :key="item.name">
+      <div v-for="item in cardData.slice(0, 5)" class="card-body__item" :key="item.name" @click="toDetail(item.key)">
         <img class="card-body__image" :src="item.images[0]" alt="">
         <p class="card-body__name">{{ item.name }}</p>
         <p class="card-body__desc">{{ item.desc }}</p>
