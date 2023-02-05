@@ -15,7 +15,7 @@ scenicArea.value = store[dataType]
 
 <template>
   <main class="preview-page">
-    <h3>一个介绍</h3>
+    <h3>占个位置</h3>
     <div class="card">
       <div v-for="item in scenicArea" class="card-item" :key="item.name" @click="toDetail(item.key)">
         <img class="card-item__image" :src="item.images[0]" />
