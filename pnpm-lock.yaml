@@ -5,6 +5,7 @@ specifiers:
   '@vueuse/core': ^9.12.0
   autoprefixer: ^10.4.13
   axios: ^1.2.6
+  cos-js-sdk-v5: ^1.4.15
   pinia: ^2.0.29
   postcss: ^8.4.21
   postcss-pxtorem: ^6.0.0
@@ -20,6 +21,7 @@ dependencies:
   '@vueuse/core': registry.npmmirror.com/@vueuse/core/9.12.0_vue@3.2.45
   autoprefixer: registry.npmmirror.com/autoprefixer/10.4.13_postcss@8.4.21
   axios: registry.npmmirror.com/axios/1.2.6
+  cos-js-sdk-v5: registry.npmmirror.com/cos-js-sdk-v5/1.4.15
   pinia: registry.npmmirror.com/pinia/2.0.29_vue@3.2.45
   sass: registry.npmmirror.com/sass/1.57.1
   vant: registry.npmmirror.com/vant/4.0.9_vue@3.2.45
@@ -871,6 +873,13 @@ packages:
       - vue
     dev: false
 
+  registry.npmmirror.com/@xmldom/xmldom/0.8.6:
+    resolution: {integrity: sha512-uRjjusqpoqfmRkTaNuLJ2VohVr67Q5YwDATW3VU7PfzTj6IRaihGrYI7zckGZjxQPBIp63nfvJbM+Yu5ICh0Bg==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@xmldom/xmldom/-/xmldom-0.8.6.tgz}
+    name: '@xmldom/xmldom'
+    version: 0.8.6
+    engines: {node: '>=10.0.0'}
+    dev: false
+
   registry.npmmirror.com/acorn/8.8.2:
     resolution: {integrity: sha512-xjIYgE8HBrkpd/sJqOGNspf8uHG+NOHGOw6a/Urj8taM2EXfdNAH2oFcPeIFfsv3+kz/mJrS5VuMqbNLjCa2vw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/acorn/-/acorn-8.8.2.tgz}
     name: acorn
@@ -1101,6 +1110,14 @@ packages:
     name: core-util-is
     version: 1.0.3
     dev: true
+
+  registry.npmmirror.com/cos-js-sdk-v5/1.4.15:
+    resolution: {integrity: sha512-WhkhjicmprBtsPNog2ENoXvP9FUAIqaF9qOI1Hlolbqv98VVJLbv4lOq66HPkw6sdW5LBT8awI4Ljx48gl8c8A==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/cos-js-sdk-v5/-/cos-js-sdk-v5-1.4.15.tgz}
+    name: cos-js-sdk-v5
+    version: 1.4.15
+    dependencies:
+      '@xmldom/xmldom': registry.npmmirror.com/@xmldom/xmldom/0.8.6
+    dev: false
 
   registry.npmmirror.com/create-require/1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/create-require/-/create-require-1.1.1.tgz}
