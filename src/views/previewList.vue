@@ -18,7 +18,7 @@ scenicArea.value = store[dataType]
     <h3>占个位置</h3>
     <div class="card">
       <div v-for="item in scenicArea" class="card-item" :key="item.name" @click="toDetail(item.key)">
-        <img class="card-item__image" :src="item.images[0]" />
+        <img class="card-item__image" :src="item.images[0]" loading="lazy"/>
         <img class="card-item__wenli" src="../assets/images/wenli_1.png" />
         <div class="card-item__info">
           <p class="card-item__name">{{ item.name }}</p>

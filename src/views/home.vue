@@ -23,7 +23,7 @@ getData('scenic').then(res => {
     <div class="home-page-nav">
       <div v-for="item in navCard" :key="item.key" @click="toView(item.key)">
         <div class="home-page-nav__image">
-          <img :src="item.image" />
+          <img :src="item.image" loading="lazy"/>
         </div>
         <p>{{ item.type }}</p>
       </div>
