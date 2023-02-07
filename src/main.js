@@ -4,8 +4,10 @@ import router from './router/index'
 import './utils/flexible.js'
 import { createPinia } from 'pinia'
 import './style.css';
-// import vconsole from 'vconsole'
-// new vconsole()
+import { initAllImage } from '@/utils/useData.js'
+import VConsole from 'vconsole'
+initAllImage()
+new VConsole()
 const app = createApp(App)
 
 app.use(router)

@@ -3,20 +3,26 @@ import CommonCard from '@/components/CommonCard.vue'
 import { getData, navCard } from '@/utils/useData.js'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+localStorage.removeItem('china-pinia-info')
 const router = useRouter()
 const toView = (key) => {
   router.push(`/preview?type=${key}`)
 }
-const scenicArea = ref([])
+const scenicData = ref([])
+
 getData('scenic').then(res => {
-  scenicArea.value = res
+  scenicData.value = res
+});
+const foodData = ref([])
+getData('food').then(res => {
+  foodData.value = res
 });
 </script>
 
 <template>
   <main class="home-page">
     <van-swipe class="home-swipe" lazy-render autoplay="3000">
-      <van-swipe-item v-for="item in scenicArea" :key="item.name">
+      <van-swipe-item v-for="item in scenicData" :key="item.name">
         <img class="home-swipe__image" :src="item.images[0]" />
       </van-swipe-item>
     </van-swipe>
@@ -28,7 +34,8 @@ getData('scenic').then(res => {
         <p>{{ item.type }}</p>
       </div>
     </div>
-    <CommonCard card-type="scenic" :card-data="scenicArea" />
+    <CommonCard card-type="scenic" :card-data="scenicData" />
+    <CommonCard card-type="food" :card-data="foodData" />
   </main>
 </template>
 

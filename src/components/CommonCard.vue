@@ -1,6 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 
+const Strs = {scenic: '景点', food: '小吃', play: '娱乐'}
 const props = defineProps({
   cardType: String,
   cardData: Array
@@ -13,7 +14,7 @@ const toDetail = (name) => {
 
 <template>
   <div class="common-card">
-    <p class="wy-title">热门景点</p>
+    <p class="wy-title">特色{{ Strs[props.cardType] }}</p>
     <div class="card-body">
       <div v-for="item in cardData.slice(0, 5)" class="card-body__item" :key="item.name" @click="toDetail(item.key)">
         <img class="card-body__image" :src="item.images[0]" alt="">

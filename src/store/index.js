@@ -6,13 +6,15 @@ export const useStore = defineStore('store', {
       userInfo: null,
       iLikes: [],
       counter: 0,
-      scenic: []
+      scenic: [],
+      food: [],
+      play: []
     }
   }
 })
 
-const st = useStore()
 export const getStore = () => {
+  const st = useStore()
   const chinaPiniaInfo = localStorage.getItem('china-pinia-info')
   if (chinaPiniaInfo) {
     // 可以通过将其 $state 属性设置为新对象来替换 Store 的整个状态：

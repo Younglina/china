@@ -1,4 +1,6 @@
 <script setup>
+import { showConfirmDialog } from 'vant';
+import 'vant/es/dialog/style';
 import { getStore } from '@/store'
 import { guide } from '@/utils/useMap.js'
 import { useRouter, useRoute } from 'vue-router'
@@ -15,16 +17,26 @@ const store = getStore()
 
 // 获取对应的数据详情
 const { name, dataType } = route.query
-const scenicArea = store[dataType]
-const curData = scenicArea.find(item => item.key === name)
+const dataList = store[dataType]
+const curData = dataList.find(item => item.key === name)
 detailData.value = curData || {}
 
 // 地图导航
 const actions = [{ name: '高德地图', type: 'gd' }, { name: '百度地图', type: 'bd' }]
 const showAction = ref(false)
 const onSelect = (v) => {
-  console.log(v)
   guide(v.type, detailData)
+}
+
+// 电话
+const phoneCall = ref('phoneCall')
+const showCall = () => {
+  showConfirmDialog({
+    message: `确定拨打电话?\n${detailData.value.phone}`,
+    showCancelButton: true,
+  }).then(()=>{
+    phoneCall.value.click();
+  })
 }
 
 // 评论相关
@@ -52,10 +64,23 @@ onBeforeMount(() => {
         </div>
         <van-divider />
         <div class="detail-info__address">
-          <p>{{ detailData.address }}</p>
-          <div @click="showAction = !showAction">
-            <van-icon name="location-o" size="0.5rem" />
-            <p>地图</p>
+          <div>
+            <p>{{ detailData.address }}</p>
+            <div class="detail-info__cost" v-if="detailData.cost || detailData.openTime">
+              <p><van-icon name="clock-o" />{{ detailData.openTime }}</p>
+              <p class="detail-info__cost__money">{{ detailData.cost }}</p>
+            </div>
+          </div>
+          <div class="detail-info__action">
+            <div @click="showAction = !showAction">
+              <van-icon name="location-o" size="0.5rem" />
+              <p>地图</p>
+            </div>
+            <div v-if="detailData.phone" @click="showCall">
+              <a :href="`tel:${detailData.phone}`" ref="phoneCall" style="display: none;"></a>
+              <van-icon name="phone-o" size="0.5rem" />
+              <p>电话</p>
+            </div>
           </div>
         </div>
         <van-action-sheet v-model:show="showAction" :actions="actions" @select="onSelect" />
@@ -138,21 +163,37 @@ onBeforeMount(() => {
 
   &__address {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 
     >p {
       flex: 1;
     }
+  }
 
-    >div {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
+  &__action{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+    >div{
+      padding: 0 4px;
     }
   }
 
+  &__cost{
+    display: flex;
+    font-size: 14px;
+    padding-top: 2px;
+    .van-icon-clock-o{
+      color:#409EFF;
+      margin-right: 2px;
+    }
+    &__money{
+      margin-left: 12px;
+      color: #F56C6C;
+    }
+  }
   &__intor {
     font-size: 14px;
     text-indent: 1.4em;
