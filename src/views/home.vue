@@ -1,22 +1,18 @@
 <script setup>
 import CommonCard from '@/components/CommonCard.vue'
-import { getData, navCard } from '@/utils/useData.js'
+import { navCard } from '@/utils/useData.js'
 import { useRouter } from 'vue-router'
+import { getStore } from '@/store'
 import { ref } from 'vue'
-localStorage.removeItem('china-pinia-info')
 const router = useRouter()
 const toView = (key) => {
   router.push(`/preview?type=${key}`)
 }
 const scenicData = ref([])
-
-getData('scenic').then(res => {
-  scenicData.value = res
-});
 const foodData = ref([])
-getData('food').then(res => {
-  foodData.value = res
-});
+const store = getStore()
+scenicData.value = store.scenic
+foodData.value = store.food
 </script>
 
 <template>
@@ -29,7 +25,7 @@ getData('food').then(res => {
     <div class="home-page-nav">
       <div v-for="item in navCard" :key="item.key" @click="toView(item.key)">
         <div class="home-page-nav__image">
-          <img :src="item.image" loading="lazy"/>
+          <img :src="item.image" loading="lazy" />
         </div>
         <p>{{ item.type }}</p>
       </div>
