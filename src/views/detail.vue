@@ -25,7 +25,7 @@ detailData.value = curData || {}
 const actions = [{ name: '高德地图', type: 'gd' }, { name: '百度地图', type: 'bd' }]
 const showAction = ref(false)
 const onSelect = (v) => {
-  guide(v.type, detailData)
+  guide(v.type, detailData.value)
 }
 
 // 电话
@@ -34,7 +34,7 @@ const showCall = () => {
   showConfirmDialog({
     message: `确定拨打电话?\n${detailData.value.phone}`,
     showCancelButton: true,
-  }).then(()=>{
+  }).then(() => {
     phoneCall.value.click();
   })
 }
@@ -170,30 +170,34 @@ onBeforeMount(() => {
     }
   }
 
-  &__action{
+  &__action {
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     font-size: 12px;
-    >div{
+
+    >div {
       padding: 0 4px;
     }
   }
 
-  &__cost{
+  &__cost {
     display: flex;
     font-size: 14px;
     padding-top: 2px;
-    .van-icon-clock-o{
-      color:#409EFF;
+
+    .van-icon-clock-o {
+      color: #409EFF;
       margin-right: 2px;
     }
-    &__money{
+
+    &__money {
       margin-left: 12px;
       color: #F56C6C;
     }
   }
+
   &__intor {
     font-size: 14px;
     text-indent: 1.4em;
