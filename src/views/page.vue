@@ -1,16 +1,17 @@
 <script setup>
-import { useRouter } from 'vue-router'
-import { getStore } from '@/store'
-const router = useRouter()
-const store = getStore()
-const toHome = () => {
-  router.push('/')
-}
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { database } from '@/firebase'
+import { useFirestore } from '@vueuse/firebase/useFirestore'
+
+const fireRef = collection(database, 'comment')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+const querySnapshot = await getDocs(fireRef, 'txc');
+querySnapshot.forEach((doc) => {
+  console.log(doc.id, " => ", doc.data());
+});
 </script>
 
 <template>
   <div>
-    <div>{{ store.counter }}</div>
-    <button @click="toHome">asdf</button>
+    <button @click="writeUserData">writeUserData</button>
   </div>
 </template>
