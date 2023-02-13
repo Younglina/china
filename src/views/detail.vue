@@ -4,35 +4,56 @@ import 'vant/es/dialog/style';
 import { getStore } from '@/store'
 import { guide } from '@/utils/useMap.js'
 import { useRouter, useRoute } from 'vue-router'
-import { ref, onBeforeMount } from 'vue'
+import { ref, reactive, onBeforeMount } from 'vue'
+import {  doc, getDoc } from "firebase/firestore";
+import { database } from '@/firebase'
 import Http from '@/utils/request.js'
 const router = useRouter()
 const route = useRoute()
 
-let detailData = ref({}) // 数据详情
+let detailData = reactive({}) // 数据详情
 let isLike = ref(false) // 是否喜欢
-let message = ref('') // 留言
 let showMore = ref(false) // 查看更多
+let aryComment = ref([])
 const store = getStore()
 
-// 获取对应的数据详情
-const { name, dataType } = route.query
-const dataList = store[dataType]
-const curData = dataList.find(item => item.key === name)
-detailData.value = curData || {}
+onBeforeMount(async () => {
+    // 获取对应的数据详情
+  const { name, dataType } = route.query
+  const dataList = store[dataType]
+  const curData = dataList.find(item => item.key === name)
+  detailData = curData || {}
+  // 获取所有commnet
+  // const fireRef = collection(database, 'comment') 
+  // const querySnapshot = getDocs(fireRef)
+  // querySnapshot.forEach((doc) => {
+  //   console.log(doc.id, " => ", doc.data());
+  // }); 
+  // 结果类似于： txc => {data: [{1},{2},{3}]}; yyc: {data: [{1},{2},{3}]}
+  // 获取单个类型的comment
+  const docRef = doc(database, 'comment', detailData.key)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+  const docSnap = await getDoc(docRef);
+  let comments = []
+  if(docSnap.exists()){
+    const arrCommnet = docSnap.data().data
+    comments = arrCommnet.map(item=>JSON.parse(item))
+  }
+  const {data: mockComment} = await Http.get('/commend')
+  aryComment.value = comments.concat(mockComment)
+})
 
 // 地图导航
 const actions = [{ name: '高德地图', type: 'gd' }, { name: '百度地图', type: 'bd' }]
 const showAction = ref(false)
 const onSelect = (v) => {
-  guide(v.type, detailData.value)
+  guide(v.type, detailData)
 }
 
 // 电话
 const phoneCall = ref('phoneCall')
 const showCall = () => {
   showConfirmDialog({
-    message: `确定拨打电话?\n${detailData.value.phone}`,
+    message: `确定拨打电话?\n${detailData.phone}`,
     showCancelButton: true,
   }).then(() => {
     phoneCall.value.click();
@@ -41,12 +62,10 @@ const showCall = () => {
 
 // 评论相关
 const randomAvatar = ['linear-gradient(to top, #c471f5 0%, #fa71cd 100%)', 'linear-gradient(to top, #48c6ef 0%, #6f86d6 100%)', 'linear-gradient(to right, #f78ca0 0%, #f9748f 19%, #fd868c 60%, #fe9a8b 100%)', 'linear-gradient(to top, #feada6 0%, #f5efef 100%)', 'linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%)', 'linear-gradient(to top, #accbee 0%, #e7f0fd 100%)', 'linear-gradient(to right, #74ebd5 0%, #9face6 100%)',]
-let aryCommend = ref([])
-onBeforeMount(() => {
-  Http.get('/commend').then(res => {
-    aryCommend.value = res.data
-  })
-})
+
+const toComment = () => {
+  router.push(`/page?areaKey=${detailData.key}`)
+}
 </script>
 
 <template>
@@ -98,12 +117,12 @@ onBeforeMount(() => {
         </van-popup>
       </div>
       <div class="detail-info">
-        <van-field v-model="message" style="margin-bottom: 10px;" label="留言" placeholder="说点什么吧~" />
-        <div v-for="(item, idx) in aryCommend" :key="idx" class="detail-comment">
+        <van-button @click="toComment" type="primary" block size="small" round>去留言</van-button>
+        <div v-for="(item, idx) in aryComment" :key="idx" class="detail-comment">
           <div class="detail-comment__user">
             <div class="detail-comment__avatar" :style="{ backgroundImage: randomAvatar[idx % 10] }"></div>
             <div>
-              <p class="detail-comment__username">{{ item.name }}</p>
+              <p class="detail-comment__username">{{ item.nickname }}</p>
               <p class="detail-comment__time">{{ item.datetime }}</p>
             </div>
           </div>
@@ -218,7 +237,7 @@ onBeforeMount(() => {
 }
 
 .detail-comment {
-  padding: 0 10px;
+  padding: 10px;
 
   &__user {
     display: flex;
