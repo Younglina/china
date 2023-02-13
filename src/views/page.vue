@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import { collection, doc, getDoc, getDocs, updateDoc, arrayUnion } from "firebase/firestore";
 import { database } from '@/firebase'
-
 function setCommnetData(){
   const commentDoc = doc(database, 'comment','txc')
   updateDoc(commentDoc, {
