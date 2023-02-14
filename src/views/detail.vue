@@ -1,13 +1,15 @@
 <script setup>
-import { showConfirmDialog } from 'vant';
+import { showConfirmDialog, showImagePreview } from 'vant';
 import 'vant/es/dialog/style';
+import 'vant/es/image-preview/style';
 import { getStore } from '@/store'
 import { guide } from '@/utils/useMap.js'
 import { useRouter, useRoute } from 'vue-router'
 import { ref, reactive, onBeforeMount } from 'vue'
-import {  doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { database } from '@/firebase'
 import Http from '@/utils/request.js'
+const ImageBaseUrl = 'https://younglina-1256042946.cos.ap-nanjing.myqcloud.com/'
 const router = useRouter()
 const route = useRoute()
 
@@ -18,7 +20,7 @@ let aryComment = ref([])
 const store = getStore()
 
 onBeforeMount(async () => {
-    // 获取对应的数据详情
+  // 获取对应的数据详情
   const { name, dataType } = route.query
   const dataList = store[dataType]
   const curData = dataList.find(item => item.key === name)
@@ -31,15 +33,20 @@ onBeforeMount(async () => {
   // }); 
   // 结果类似于： txc => {data: [{1},{2},{3}]}; yyc: {data: [{1},{2},{3}]}
   // 获取单个类型的comment
-  const docRef = doc(database, 'comment', detailData.key)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+  const docRef = doc(database, 'comment', detailData.key)
   const docSnap = await getDoc(docRef);
   let comments = []
-  if(docSnap.exists()){
+  if (docSnap.exists()) {
     const arrCommnet = docSnap.data().data
-    comments = arrCommnet.map(item=>JSON.parse(item))
+    comments = arrCommnet.map(item => JSON.parse(item))
   }
-  const {data: mockComment} = await Http.get('/commend')
-  aryComment.value = comments.concat(mockComment)
+  const { data: mockComment } = await Http.get('/commend')
+  aryComment.value = comments.concat(mockComment).map(item => {
+    if (item.images) {
+      item.imagesArr = item.images.split(',').map(item=>ImageBaseUrl + item)
+    }
+    return item
+  })
 })
 
 // 地图导航
@@ -62,9 +69,15 @@ const showCall = () => {
 
 // 评论相关
 const randomAvatar = ['linear-gradient(to top, #c471f5 0%, #fa71cd 100%)', 'linear-gradient(to top, #48c6ef 0%, #6f86d6 100%)', 'linear-gradient(to right, #f78ca0 0%, #f9748f 19%, #fd868c 60%, #fe9a8b 100%)', 'linear-gradient(to top, #feada6 0%, #f5efef 100%)', 'linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%)', 'linear-gradient(to top, #accbee 0%, #e7f0fd 100%)', 'linear-gradient(to right, #74ebd5 0%, #9face6 100%)',]
-
 const toComment = () => {
   router.push(`/page?areaKey=${detailData.key}`)
+}
+const imagePreview = (imgs, idx) => {
+  showImagePreview({
+    images: imgs,
+    startPosition: idx,
+    closeable: true,
+  })
 }
 </script>
 
@@ -127,6 +140,14 @@ const toComment = () => {
             </div>
           </div>
           <p class="detail-comment__content">{{ item.content }}</p>
+          <div v-if="item.imagesArr" class="detail-comment__imgs" >
+            <van-image v-for="(img, idx) in item.imagesArr" @click="imagePreview(item.imagesArr, idx)" width="2rem" height="2rem" fit="cover" lazy-load :key="item"
+              :src="img">
+              <template v-slot:error>
+                加载失败
+              </template>
+            </van-image>
+          </div>
           <van-divider />
         </div>
       </div>
@@ -262,6 +283,17 @@ const toComment = () => {
   &__content {
     font-size: 14px;
     padding-top: 4px;
+  }
+
+  &__imgs {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+  }
+
+  &__img {
+    width: 60px;
+    height: 60px;
   }
 }
 </style>
