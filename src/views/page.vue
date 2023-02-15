@@ -3,9 +3,7 @@ import { ref, reactive } from 'vue'
 import { showToast, showLoadingToast, closeToast, showSuccessToast } from 'vant'
 import 'vant/es/toast/style';
 import { useRouter, useRoute } from 'vue-router'
-import { doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
-import { database } from '@/firebase'
-import {uploadImage } from '@/utils/useData.js'
+import { uploadImage, uploadComment } from '@/utils/useData.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -14,13 +12,13 @@ const fileList = ref([])
 const { areaKey } = route.query
 
 async function setCommnetData() {
-  if(!commentObj.nickname){
+  if (!commentObj.nickname) {
     showToast('还没有填写昵称哦');
-    return 
+    return
   }
-  if(!commentObj.content || !fileList.value.length){
+  if (!commentObj.content && !fileList.value.length) {
     showToast('还没有填写内容或图片哦');
-    return 
+    return
   }
   showLoadingToast({
     message: '提交中...',
@@ -30,31 +28,23 @@ async function setCommnetData() {
   });
   let commentImages = ""
   const commentDate = new Date()
-  if(fileList.value.length){
-    commentImages = fileList.value.map(item=>`${areaKey}_${+commentDate}${item.file.name}`).join(',')
+  if (fileList.value.length) {
+    commentImages = fileList.value.map(item => `${areaKey}_${+commentDate}${item.file.name}`).join(',')
   }
-  const commentDoc = doc(database, 'comment', areaKey)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-  const docSnap = await getDoc(commentDoc);
-  const commentData = `{"nickname":"${commentObj.nickname}",
-  "content": "${commentObj.content}",
-  "datetime":"${(commentDate.toLocaleString()).replaceAll('/', '-')}",
-  "images":"${commentImages}"}`
-  if(docSnap.exists()){
-    await updateDoc(commentDoc, {
-      data: arrayUnion(commentData)
-    });
-  }else{
-    await setDoc(doc(database, "comment", areaKey), {
-      data: [commentData]
-    });
+  const commentData = {
+    "nickname": commentObj.nickname,
+    "content": commentObj.content,
+    "datetime": (commentDate.toLocaleString()).replaceAll('/', '-'),
+    "images": commentImages
   }
+  await uploadComment(areaKey, commentData)
   uploadImage(areaKey, fileList.value, +commentDate)
   closeToast();
   showSuccessToast({
     message: '提交成功',
     duration: 600
   })
-  setTimeout(()=>{
+  setTimeout(() => {
     router.go(-1)
   }, 1000)
 }
@@ -69,7 +59,7 @@ async function setCommnetData() {
         placeholder="说点什么吧~" />
       <van-field name="uploader" label="文件上传">
         <template #input>
-          <van-uploader v-model="fileList" multiple :max-count="9"/>
+          <van-uploader v-model="fileList" multiple :max-count="9" />
         </template>
       </van-field>
     </van-cell-group>
@@ -84,14 +74,16 @@ async function setCommnetData() {
   </van-form>
 </template>
 <style lang="scss" scoped>
-.commnet-form{
+.commnet-form {
   position: relative;
   height: 100vh;
   overflow-y: auto;
-  :deep(.van-cell-group){
+
+  :deep(.van-cell-group) {
     margin: 0
   }
-  .action-button{
+
+  .action-button {
     display: flex;
     position: absolute;
     bottom: 0;

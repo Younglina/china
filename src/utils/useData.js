@@ -3,16 +3,19 @@ import Http from '@/utils/request.js'
 import { getStore } from '@/store'
 const ImageBaseUrl = 'https://younglina-1256042946.cos.ap-nanjing.myqcloud.com/'
 let imagesData = []
-
+const COS_CONFIG = {
+  SecretId: import.meta.env.VITE_SID,
+  SecretKey: import.meta.env.VITE_SKEY,
+}
+const BUCKET_CONFIG = {
+  Bucket: "younglina-1256042946",
+  Region: "ap-nanjing",
+}
 export const initAllImage = async () => {
-  const myCos = new COS({
-    SecretId: import.meta.env.VITE_SID,
-    SecretKey: import.meta.env.VITE_SKEY,
-  });
+  const myCos = new COS(COS_CONFIG);
   const cosData = await myCos.getBucket({
     Bucket: "younglina-1256042946",
     Region: "ap-nanjing",
-    // Prefix: 'jdz/',           /* Prefix表示列出的object的key以prefix开始，非必须 */
   });
   imagesData = cosData.Contents.map(item => {
     return { Key: item.Key }
@@ -25,14 +28,12 @@ export const initAllImage = async () => {
 
 export const uploadImage = async (type, files, timekey) => {
     const myCos = new COS({
-      SecretId: import.meta.env.VITE_SID,
-      SecretKey: import.meta.env.VITE_SKEY,
+      ...COS_CONFIG,
       SimpleUploadMethod: 'putObject',
     });
     const formatFiles = files.map(item=>{
       return {
-        Bucket: "younglina-1256042946",
-        Region: "ap-nanjing",
+        ...BUCKET_CONFIG,
         Key: `${type}_${timekey}${item.file.name}`,
         StorageClass: "STANDARD",
         Body: item.file, // 上传文件对象
@@ -52,6 +53,43 @@ export const uploadImage = async (type, files, timekey) => {
   }, function (err, data) {
       console.log(err || data);
   });
+}
+
+export const getCommnet = async (type) => {
+  const myCos = new COS({
+    ...COS_CONFIG,
+    SimpleUploadMethod: 'putObject',
+  });
+  let commnetData = []
+  try {
+    const data = await myCos.getObject({
+      ...BUCKET_CONFIG,
+      Key: `${type}.json`
+    })
+    // 将获取到的 data.Body 转换成 JSON 对象
+    commnetData = JSON.parse(data.Body.toString());
+  } catch (err) {
+    if(err.code === 'NoSuchKey'){
+      console.log('没有对应的评论文件，创建一个')
+    }else{
+      console.log(err);
+    }
+  }
+  return commnetData
+}
+
+export const uploadComment = async (type, data) => {
+  const myCos = new COS({
+    ...COS_CONFIG,
+    SimpleUploadMethod: 'putObject',
+  });
+  const commentData = await getCommnet(type)
+  commentData.unshift(data)
+  await myCos.putObject({
+    ...BUCKET_CONFIG,
+    Key: `${type}.json`,
+    Body: JSON.stringify(commentData),
+  })
 }
 
 const formatImages = (img, requestData) => {

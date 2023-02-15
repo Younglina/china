@@ -4,10 +4,9 @@ import 'vant/es/dialog/style';
 import 'vant/es/image-preview/style';
 import { getStore } from '@/store'
 import { guide } from '@/utils/useMap.js'
+import { getCommnet } from '@/utils/useData.js'
 import { useRouter, useRoute } from 'vue-router'
 import { ref, reactive, onBeforeMount } from 'vue'
-import { doc, getDoc } from "firebase/firestore";
-import { database } from '@/firebase'
 import Http from '@/utils/request.js'
 const ImageBaseUrl = 'https://younglina-1256042946.cos.ap-nanjing.myqcloud.com/'
 const router = useRouter()
@@ -25,25 +24,12 @@ onBeforeMount(async () => {
   const dataList = store[dataType]
   const curData = dataList.find(item => item.key === name)
   detailData = curData || {}
-  // 获取所有commnet
-  // const fireRef = collection(database, 'comment') 
-  // const querySnapshot = getDocs(fireRef)
-  // querySnapshot.forEach((doc) => {
-  //   console.log(doc.id, " => ", doc.data());
-  // }); 
-  // 结果类似于： txc => {data: [{1},{2},{3}]}; yyc: {data: [{1},{2},{3}]}
-  // 获取单个类型的comment
-  const docRef = doc(database, 'comment', detailData.key)
-  const docSnap = await getDoc(docRef);
-  let comments = []
-  if (docSnap.exists()) {
-    const arrCommnet = docSnap.data().data
-    comments = arrCommnet.map(item => JSON.parse(item))
-  }
+  const txComment = await getCommnet(name);
+  console.log(txComment)
   const { data: mockComment } = await Http.get('/commend')
-  aryComment.value = comments.concat(mockComment).map(item => {
+  aryComment.value = txComment.concat(mockComment).map(item => {
     if (item.images) {
-      item.imagesArr = item.images.split(',').map(item=>ImageBaseUrl + item)
+      item.imagesArr = item.images.split(',').map(item => ImageBaseUrl + item)
     }
     return item
   })
@@ -140,9 +126,9 @@ const imagePreview = (imgs, idx) => {
             </div>
           </div>
           <p class="detail-comment__content">{{ item.content }}</p>
-          <div v-if="item.imagesArr" class="detail-comment__imgs" >
-            <van-image v-for="(img, idx) in item.imagesArr" @click="imagePreview(item.imagesArr, idx)" width="2rem" height="2rem" fit="cover" lazy-load :key="item"
-              :src="img">
+          <div v-if="item.imagesArr" class="detail-comment__imgs">
+            <van-image v-for="(img, idx) in item.imagesArr" @click="imagePreview(item.imagesArr, idx)" width="2rem"
+              height="2rem" fit="cover" lazy-load :key="item" :src="img">
               <template v-slot:error>
                 加载失败
               </template>
