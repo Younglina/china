@@ -105,10 +105,13 @@ const imagePreview = (imgs, idx) => {
       </div>
       <div class="detail-info">
         <p class="wy-title">介绍</p>
-        <p class="detail-info__intor">{{ detailData.intorduction.slice(0, 50) + '...' }}</p>
-        <div class="detail-info__showmore" @click="showMore = !showMore">
-          <p>查看更多</p>
-        </div>
+        <template v-if="detailData.intorduction">
+          <p class="detail-info__intor">{{ detailData.intorduction?.slice(0, 50) + '...' }}</p>
+          <div class="detail-info__showmore" @click="showMore = !showMore">
+            <p>查看更多</p>
+          </div>
+        </template>
+        <p>暂无</p>
         <van-popup v-model:show="showMore" round position="bottom" :style="{ height: '50%', padding: '20px' }">
           <p style="text-indent: 2em">{{
             detailData.intorduction

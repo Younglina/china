@@ -23,11 +23,11 @@ foodData.value = store.food
       </van-swipe-item>
     </van-swipe>
     <div class="home-page-nav">
-      <div v-for="item in navCard" :key="item.key" @click="toView(item.key)">
+      <div v-for="item in navCard" :key="item.value" @click="toView(item.value)">
         <div class="home-page-nav__image">
           <img :src="item.image" loading="lazy" />
         </div>
-        <p>{{ item.type }}</p>
+        <p>{{ item.text }}</p>
       </div>
     </div>
     <CommonCard card-type="scenic" :card-data="scenicData" />

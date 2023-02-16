@@ -57,7 +57,7 @@ async function setCommnetData() {
       <van-field v-model="commentObj.nickname" style="margin-bottom: 10px;" label="昵称" placeholder="请输入昵称" />
       <van-field v-model="commentObj.content" style="margin-bottom: 10px;" label="留言" rows="2" autosize type="textarea"
         placeholder="说点什么吧~" />
-      <van-field name="uploader" label="文件上传">
+      <van-field name="uploader" label="图片上传">
         <template #input>
           <van-uploader v-model="fileList" multiple :max-count="9" />
         </template>
