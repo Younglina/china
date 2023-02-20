@@ -10,6 +10,7 @@
     "deploy": "sh deploy.sh"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "autoprefixer": "^10.4.13",
     "axios": "^1.2.6",
     "cos-js-sdk-v5": "^1.4.15",

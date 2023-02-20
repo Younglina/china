@@ -107,7 +107,6 @@ const formatImages = (img, requestData) => {
 }
 
 export const getData = async (type) => {
-  // const { data: requestData } = await Http.get(`/${type}`, { key })
   const requestData = await getCommnet(type)
   imagesData.map(item => {
     formatImages(item.Key, requestData)

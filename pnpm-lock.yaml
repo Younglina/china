@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@amap/amap-jsapi-loader': ^1.0.1
   '@vitejs/plugin-vue': ^4.0.0
   autoprefixer: ^10.4.13
   axios: ^1.2.6
@@ -18,6 +19,7 @@ specifiers:
   vue-router: '4'
 
 dependencies:
+  '@amap/amap-jsapi-loader': registry.npmmirror.com/@amap/amap-jsapi-loader/1.0.1
   autoprefixer: registry.npmmirror.com/autoprefixer/10.4.13_postcss@8.4.21
   axios: registry.npmmirror.com/axios/1.2.6
   cos-js-sdk-v5: registry.npmmirror.com/cos-js-sdk-v5/1.4.15
@@ -37,6 +39,12 @@ devDependencies:
   vite: registry.npmmirror.com/vite/4.0.4_sass@1.57.1
 
 packages:
+
+  registry.npmmirror.com/@amap/amap-jsapi-loader/1.0.1:
+    resolution: {integrity: sha512-nPyLKt7Ow/ThHLkSvn2etQlUzqxmTVgK7bIgwdBRTg2HK5668oN7xVxkaiRe3YZEzGzfV2XgH5Jmu2T73ljejw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@amap/amap-jsapi-loader/-/amap-jsapi-loader-1.0.1.tgz}
+    name: '@amap/amap-jsapi-loader'
+    version: 1.0.1
+    dev: false
 
   registry.npmmirror.com/@ampproject/remapping/2.2.0:
     resolution: {integrity: sha512-qRmjj8nj9qmLTQXXmaR1cck3UXSRMPrbsLJAasZpF+t3riI71BXed5ebIOYwQntykeZuhjsdweEc9BxH5Jc26w==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@ampproject/remapping/-/remapping-2.2.0.tgz}

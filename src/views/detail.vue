@@ -105,8 +105,8 @@ const imagePreview = (imgs, idx) => {
       </div>
       <div class="detail-info">
         <p class="wy-title">介绍</p>
-        <template v-if="detailData.intorduction">
-          <p class="detail-info__intor">{{ detailData.intorduction?.slice(0, 50) + '...' }}</p>
+        <template v-if="detailData.introduction">
+          <p class="detail-info__intor">{{ detailData.introduction?.slice(0, 50) + '...' }}</p>
           <div class="detail-info__showmore" @click="showMore = !showMore">
             <p>查看更多</p>
           </div>
@@ -114,7 +114,7 @@ const imagePreview = (imgs, idx) => {
         <p>暂无</p>
         <van-popup v-model:show="showMore" round position="bottom" :style="{ height: '50%', padding: '20px' }">
           <p style="text-indent: 2em">{{
-            detailData.intorduction
+            detailData.introduction
           }}</p>
         </van-popup>
       </div>
@@ -205,8 +205,8 @@ const imagePreview = (imgs, idx) => {
     justify-content: center;
     text-align: center;
     font-size: 12px;
-
     >div {
+      min-width: 28px;
       padding: 0 4px;
     }
   }
