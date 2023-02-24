@@ -84,6 +84,22 @@ export const uploadComment = async (type, data) => {
     ...COS_CONFIG,
     SimpleUploadMethod: 'putObject',
   });
+//   myCos.headObject({
+//     ...BUCKET_CONFIG,
+//     Key: `${type}.json`,
+// }, function(err, cdata) {
+//     if (err) return console.log(err);
+//     // 首先取到要追加的文件当前长度，即需要上送的Position
+//     var position = cdata.headers['content-length'];
+//     myCos.appendObject({
+//         ...BUCKET_CONFIG,
+//         Key: `${type}.json`,
+//         Body: JSON.stringify([data], null, " "), /* 必须，上传文件对象，可以是input[type="file"]标签选择本地文件后得到的file对象 */
+//         Position: position, // 初次上传为0
+//     }, function(err, data) {
+//         console.log(err || data);
+//     });
+// });
   const commentData = await getCommnet(type)
   commentData.unshift(data)
   await myCos.putObject({
