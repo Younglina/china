@@ -6,6 +6,7 @@ const routes = [
   { path: '/preview', name: 'Preview', component: () => import('@/views/previewList.vue') },
   { path: '/detail', name: 'Detail', component: () => import('@/views/detail.vue') },
   { path: '/addArea', name: 'AddArea', component: () => import('@/views/addArea.vue') },
+  { path: '/test', name: 'test', component: () => import('@/views/test.vue') },
 ]
 
 const router = createRouter({

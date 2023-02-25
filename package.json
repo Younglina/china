@@ -15,6 +15,7 @@
     "axios": "^1.2.6",
     "cos-js-sdk-v5": "^1.4.15",
     "firebase": "^9.17.1",
+    "leancloud-storage": "^4.14.0",
     "pinia": "^2.0.29",
     "sass": "^1.57.1",
     "vant": "^4.0.9",

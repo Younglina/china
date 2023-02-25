@@ -25,11 +25,10 @@ onBeforeMount(async () => {
   const curData = dataList.find(item => item.key === name)
   detailData = curData || {}
   const txComment = await getCommnet(name);
-  console.log(txComment)
   const { data: mockComment } = await Http.get('/commend')
   aryComment.value = txComment.concat(mockComment).map(item => {
     if (item.images) {
-      item.imagesArr = item.images.split(',').map(item => ImageBaseUrl + item)
+      item.imagesArr = item.images.map(item => ImageBaseUrl + item)
     }
     return item
   })

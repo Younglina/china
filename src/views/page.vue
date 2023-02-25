@@ -29,7 +29,7 @@ async function setCommnetData() {
   let commentImages = ""
   const commentDate = new Date()
   if (fileList.value.length) {
-    commentImages = fileList.value.map(item => `${areaKey}_${+commentDate}${item.file.name}`).join(',')
+    commentImages = fileList.value.map(item => `${areaKey}_${+commentDate}_${item.file.name}`)
   }
   const commentData = {
     "nickname": commentObj.nickname,

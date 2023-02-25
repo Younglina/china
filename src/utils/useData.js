@@ -1,5 +1,11 @@
 import COS from "cos-js-sdk-v5";
 import { getStore } from '@/store'
+import AV from 'leancloud-storage'
+AV.init({
+    appId: 'eoqcmwvh2rt97nbGb2QBvMk3-gzGzoHsz',
+    appKey: '1VZqMQ3JThd1fuTCyCbYTtsK',
+    serverURL: 'https://eoqcmwvh.lc-cn-n1-shared.com'
+});
 const ImageBaseUrl = 'https://younglina-1256042946.cos.ap-nanjing.myqcloud.com/'
 let imagesData = []
 const COS_CONFIG = {
@@ -57,56 +63,23 @@ export const uploadImage = async (type, files, timekey) => {
 }
 
 export const getCommnet = async (type) => {
-  const myCos = new COS({
-    ...COS_CONFIG,
-    SimpleUploadMethod: 'putObject',
-  });
-  let commnetData = []
-  try {
-    const data = await myCos.getObject({
-      ...BUCKET_CONFIG,
-      Key: `${type}.json`
-    })
-    // 将获取到的 data.Body 转换成 JSON 对象
-    commnetData = JSON.parse(data.Body.toString());
-  } catch (err) {
-    if(err.code === 'NoSuchKey'){
-      console.log('没有对应的评论文件，创建一个')
-    }else{
-      console.log(err);
-    }
+  const query = new AV.Query(type);
+  try{
+    const requestData = await query.find()
+    const formatData = requestData.map(item=>item.attributes)
+    return formatData
+  }catch(e){
+    console.dir(e)
+    return []
   }
-  return commnetData
 }
-
 export const uploadComment = async (type, data) => {
-  const myCos = new COS({
-    ...COS_CONFIG,
-    SimpleUploadMethod: 'putObject',
-  });
-//   myCos.headObject({
-//     ...BUCKET_CONFIG,
-//     Key: `${type}.json`,
-// }, function(err, cdata) {
-//     if (err) return console.log(err);
-//     // 首先取到要追加的文件当前长度，即需要上送的Position
-//     var position = cdata.headers['content-length'];
-//     myCos.appendObject({
-//         ...BUCKET_CONFIG,
-//         Key: `${type}.json`,
-//         Body: JSON.stringify([data], null, " "), /* 必须，上传文件对象，可以是input[type="file"]标签选择本地文件后得到的file对象 */
-//         Position: position, // 初次上传为0
-//     }, function(err, data) {
-//         console.log(err || data);
-//     });
-// });
-  const commentData = await getCommnet(type)
-  commentData.unshift(data)
-  await myCos.putObject({
-    ...BUCKET_CONFIG,
-    Key: `${type}.json`,
-    Body: JSON.stringify(commentData, null, " "),
-  })
+  const commentObject = AV.Object(type);
+  for(let key in data){
+    commentObject.set(key, data[key]);
+  }
+  const finishComment = await commentObject.save()
+  console.log(finishComment, 'comment finish')
 }
 
 const formatImages = (img, requestData) => {
@@ -123,15 +96,23 @@ const formatImages = (img, requestData) => {
 }
 
 export const getData = async (type) => {
-  const requestData = await getCommnet(type)
-  imagesData.map(item => {
-    formatImages(item.Key, requestData)
-  })
-  const localPiniaData = JSON.parse(localStorage.getItem('china-pinia-info'))
-  const piniaData = localPiniaData || {}
-  piniaData[type] = requestData
-  localStorage.setItem('china-pinia-info', JSON.stringify(piniaData))
-  return requestData
+  // await getCommnet(type)
+  const query = new AV.Query(type);
+  try{
+    const requestData = await query.find()
+    const formatData = requestData.map(item=>item.attributes)
+    imagesData.map(item => {
+      formatImages(item.Key, formatData)
+    })
+    const localPiniaData = JSON.parse(localStorage.getItem('china-pinia-info'))
+    const piniaData = localPiniaData || {}
+    piniaData[type] = formatData
+    localStorage.setItem('china-pinia-info', JSON.stringify(piniaData))
+    return formatData
+  }catch(e){
+    console.dir(e)
+    return []
+  }
 }
 
 export const initData = async () => {
