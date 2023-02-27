@@ -1,6 +1,7 @@
 <script setup>
 import CommonCard from '@/components/CommonCard.vue'
-import { showLoadingToast } from 'vant'
+import { showLoadingToast, closeToast } from 'vant'
+import 'vant/es/toast/style';
 import { navCard } from '@/utils/useData.js'
 import { useRouter } from 'vue-router'
 import { getStore } from '@/store'
@@ -10,23 +11,25 @@ const toView = (key) => {
   showLoadingToast({
     message: '加载中...',
     duration: 0,
-    forbidClick: true,
     loadingType: 'spinner',
   });
   router.push(`/preview?type=${key}`)
+  closeToast()
 }
 const scenicData = ref([])
 const foodData = ref([])
+const porcelainData = ref([])
 const store = getStore()
 scenicData.value = store.scenic
 foodData.value = store.food
+porcelainData.value = store.porcelain
 </script>
 
 <template>
   <main class="home-page">
     <van-swipe class="home-swipe" lazy-render autoplay="3000">
       <van-swipe-item v-for="item in scenicData" :key="item.name">
-        <img class="home-swipe__image" :src="item.images[0]" />
+        <img class="home-swipe__image" :src="item.images[0]" :alt="item.name"/>
       </van-swipe-item>
     </van-swipe>
     <div class="home-page-nav">
@@ -39,6 +42,7 @@ foodData.value = store.food
     </div>
     <CommonCard card-type="scenic" :card-data="scenicData" />
     <CommonCard card-type="food" :card-data="foodData" />
+    <CommonCard card-type="porcelain" :card-data="porcelainData" />
   </main>
 </template>
 

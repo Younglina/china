@@ -89,7 +89,7 @@ const showLngLatList = () => {
     showFailToast('请先填写名称')
     return
   }
-  AMapLoader.load().then((AMap) => {
+  AMapLoader.load(['AMap.Autocomplete']).then((AMap) => {
     AMap.plugin('AMap.AutoComplete', () => {
       // 实例化Autocomplete
       const autoOptions = {
@@ -131,7 +131,7 @@ const onConfirmAddress = (v) => {
       <van-field v-model="formData.name" label="名称" placeholder="请输入名称" required />
       <van-field v-model="formData.key" label="关键字" placeholder="拼音首字母缩写" required />
       <van-field v-model="formData.locat" label="所在地" placeholder="大致街区，如昌江区" required />
-      <van-field is-link readonly label="详细地址" placeholder="请选择详细地址" @click="showLngLatList" />
+      <van-field v-model="formData.address" is-link readonly label="详细地址" placeholder="请选择详细地址" @click="showLngLatList" />
       <van-action-sheet v-model:show="showPickerLngLat" :actions="LngLatList" cancel-text="取消" description="请选择详细地址"
         @select="onConfirmAddress" close-on-click-action />
       <van-field v-model="dataType" is-link readonly label="数据类型" placeholder="选择数据类型" @click="showPicker = true" />

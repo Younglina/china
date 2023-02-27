@@ -70,7 +70,7 @@ const imagePreview = (imgs, idx) => {
   <main class="detail-page">
     <van-swipe v-if="detailData.images.length" class="home-swipe" lazy-render autoplay="3000">
       <van-swipe-item v-for="item in detailData.images" :key="item.name">
-        <img class="home-swipe__image" :src="item" />
+        <img class="home-swipe__image" :src="item"  :alt="item.name"/>
       </van-swipe-item>
     </van-swipe>
     <van-empty v-else description="暂无图片" />
@@ -86,7 +86,7 @@ const imagePreview = (imgs, idx) => {
             <p>{{ detailData.address }}</p>
             <div class="detail-info__cost" v-if="detailData.cost || detailData.openTime">
               <p><van-icon name="clock-o" />{{ detailData.openTime }}</p>
-              <p class="detail-info__cost__money">{{ detailData.cost }}</p>
+              <p class="detail-info__cost__money"><van-icon name="cash-o" />{{ detailData.cost }}</p>
             </div>
           </div>
           <div class="detail-info__action">

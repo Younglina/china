@@ -8,7 +8,8 @@ export const useStore = defineStore('store', {
       counter: 0,
       scenic: [],
       food: [],
-      play: []
+      play: [],
+      porcelain: [],
     }
   }
 })
