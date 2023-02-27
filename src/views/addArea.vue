@@ -89,9 +89,7 @@ const showLngLatList = () => {
     showFailToast('请先填写名称')
     return
   }
-  AMapLoader.load({ //可多次调用load
-    plugins: ['AMap.MapType']
-  }).then((AMap) => {
+  AMapLoader.load().then((AMap) => {
     AMap.plugin('AMap.AutoComplete', () => {
       // 实例化Autocomplete
       const autoOptions = {
@@ -114,6 +112,7 @@ const showLngLatList = () => {
     })
   }).catch((e) => {
     console.error(e);
+    showFailToast('查询详细地址失败')
   });
 }
 const onConfirmAddress = (v) => {

@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 
-const Strs = {scenic: '景点', food: '小吃', play: '娱乐'}
+const Strs = {scenic: '景点', food: '小吃', play: '娱乐', porcelain: '瓷器'}
 const props = defineProps({
   cardType: String,
   cardData: Array

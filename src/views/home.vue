@@ -1,11 +1,18 @@
 <script setup>
 import CommonCard from '@/components/CommonCard.vue'
+import { showLoadingToast } from 'vant'
 import { navCard } from '@/utils/useData.js'
 import { useRouter } from 'vue-router'
 import { getStore } from '@/store'
 import { ref } from 'vue'
 const router = useRouter()
 const toView = (key) => {
+  showLoadingToast({
+    message: '加载中...',
+    duration: 0,
+    forbidClick: true,
+    loadingType: 'spinner',
+  });
   router.push(`/preview?type=${key}`)
 }
 const scenicData = ref([])
