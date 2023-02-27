@@ -96,7 +96,6 @@ const formatImages = (img, requestData) => {
 }
 
 export const getData = async (type) => {
-  // await getCommnet(type)
   const query = new AV.Query(type);
   try{
     const requestData = await query.find()
