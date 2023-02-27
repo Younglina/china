@@ -69,11 +69,12 @@ const imagePreview = (imgs, idx) => {
 
 <template>
   <main class="detail-page">
-    <van-swipe class="home-swipe" lazy-render autoplay="3000">
+    <van-swipe v-if="detailData.images.length" class="home-swipe" lazy-render autoplay="3000">
       <van-swipe-item v-for="item in detailData.images" :key="item.name">
         <img class="home-swipe__image" :src="item" />
       </van-swipe-item>
     </van-swipe>
+    <van-empty v-else description="暂无图片" />
     <div class="detail-container">
       <div class="detail-info">
         <div class="detail-info__title">
@@ -107,11 +108,11 @@ const imagePreview = (imgs, idx) => {
         <p class="wy-title">介绍</p>
         <template v-if="detailData.introduction">
           <p class="detail-info__intor">{{ detailData.introduction?.slice(0, 50) + '...' }}</p>
-          <div class="detail-info__showmore" @click="showMore = !showMore">
+          <div v-if="detailData.introduction.length>50" class="detail-info__showmore" @click="showMore = !showMore">
             <p>查看更多</p>
           </div>
         </template>
-        <p>暂无</p>
+        <p v-else>暂无</p>
         <van-popup v-model:show="showMore" round position="bottom" :style="{ height: '50%', padding: '20px' }">
           <p style="text-indent: 2em">{{
             detailData.introduction
