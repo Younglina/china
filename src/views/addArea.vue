@@ -3,7 +3,7 @@
 import { reactive, ref, onMounted } from 'vue'
 import { navCard, submitData, uploadImage } from '@/utils/useData.js'
 import { showLoadingToast, showSuccessToast, showFailToast } from 'vant'
-import 'vant/es/toast/style';
+
 import AMapLoader from '@amap/amap-jsapi-loader';
 
 onMounted(() => {

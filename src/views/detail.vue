@@ -1,10 +1,10 @@
 <script setup>
-import { showConfirmDialog, showImagePreview } from 'vant';
+import { showConfirmDialog, showImagePreview, showFailToast } from 'vant';
 import 'vant/es/dialog/style';
 import 'vant/es/image-preview/style';
 import { useStore } from '@/store'
 import { guide } from '@/utils/useMap.js'
-import { getCommnet } from '@/utils/useData.js'
+import { getCommnet, setLike, isLogin } from '@/utils/useData.js'
 import { useRouter, useRoute } from 'vue-router'
 import { ref, reactive, onBeforeMount } from 'vue'
 import Http from '@/utils/request.js'
@@ -16,14 +16,16 @@ let detailData = reactive({}) // 数据详情
 let isLike = ref(false) // 是否喜欢
 let showMore = ref(false) // 查看更多
 let aryComment = ref([])
-const store = useStore()
 
 onBeforeMount(async () => {
   // 获取对应的数据详情
   const { name, dataType } = route.query
+  const store = useStore()
+  console.log(store)
   const dataList = store[dataType]
   const curData = dataList.find(item => item.key === name)
   detailData = curData || {}
+  isLike.value = store.userInfo?store.userInfo.likes.includes(detailData.key):false
   const txComment = await getCommnet(name);
   const { data: mockComment } = await Http.get('/commend')
   aryComment.value = txComment.concat(mockComment).map(item => {
@@ -64,6 +66,16 @@ const imagePreview = (imgs, idx) => {
     closeable: true,
   })
 }
+
+// 喜欢
+const handleLike = () => {
+  if(!isLogin()){
+    showFailToast('请去我的页面进行登录或注册')
+    return
+  }
+  isLike.value = !isLike.value
+  setLike(detailData.key, isLike.value)
+}
 </script>
 
 <template>
@@ -78,7 +90,7 @@ const imagePreview = (imgs, idx) => {
       <div class="detail-info">
         <div class="detail-info__title">
           <p>{{ detailData.name }}</p>
-          <van-icon @click="isLike = !isLike" :name="isLike ? 'like' : 'like-o'" :color="isLike ? 'red' : 'inherit'" />
+          <van-icon @click="handleLike" :name="isLike ? 'like' : 'like-o'" :color="isLike ? 'red' : 'inherit'" />
         </div>
         <van-divider />
         <div class="detail-info__address">

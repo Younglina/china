@@ -6,7 +6,6 @@ initData()
 const route = useRoute()
 const active = ref('');
 watch(route, (val) => {
-  console.log(val)
   active.value = val.name
   if(!tabs.some(t=>t.name===val.name)){
     active.value = ''

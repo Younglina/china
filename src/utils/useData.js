@@ -6,7 +6,7 @@ AV.init({
     appKey: '1VZqMQ3JThd1fuTCyCbYTtsK',
     serverURL: 'https://eoqcmwvh.lc-cn-n1-shared.com'
 });
-const ImageBaseUrl = 'https://younglina-1256042946.cos.ap-nanjing.myqcloud.com/'
+export const ImageBaseUrl = 'https://younglina-1256042946.cos.ap-nanjing.myqcloud.com/'
 const imagesData = []
 const imagesDataHash = {}
 const COS_CONFIG = {
@@ -84,24 +84,30 @@ export const submitData = async (type, data) => {
   }
   const finishComment = await commentObject.save()
   console.log(finishComment, 'comment finish')
+  return finishComment
 }
 
 export const getData = async (type) => {
   const store = useStore()
-  const query = new AV.Query(type);
   try{
-    const localPiniaData = JSON.parse(localStorage.getItem('china-pinia-info'))
+    const localPiniaData = JSON.parse(localStorage.getItem('china-pinia-info')||'{}')
     let formatData = []
     if(type!=='userInfo'){
+      const query = new AV.Query(type);
       const requestData = await query.find()
       formatData = requestData.map(item=>item.attributes)
       formatData.map(item=>{
         item.images = imagesDataHash[item.key.split('_')[0]] || [`${ImageBaseUrl}noImg.svg`]
       })
     }else{
-      formatData = localPiniaData.userInfo || null
+      const userInfo = localPiniaData.userInfo || null
+      if(userInfo){
+        formatData = await queryUser(userInfo.username)
+      }else{
+        formatData = null
+      }
     }
-    const piniaData = localPiniaData || {}
+    const piniaData = localPiniaData
     piniaData[type] = formatData
     store[type] = formatData
     localStorage.setItem('china-pinia-info', JSON.stringify(piniaData))
@@ -112,10 +118,44 @@ export const getData = async (type) => {
   }
 }
 
+export async function queryUser(name, pwd){
+  const query = new AV.Query('user');
+  query.equalTo('username', name);
+  if(pwd){
+    query.equalTo('password', pwd);
+  }
+  const data = await query.find()
+  if(data.length>0){
+    return {...data[0].attributes,userid: data[0].id}
+  }
+  return null
+}
+
+export const setLike = (key, like) => {
+  const store = useStore()
+  const user = store.userInfo
+  const likes = new Set(user.likes)
+  if(like){
+    likes.add(key)
+  }else{
+    likes.delete(key)
+  }
+  const todo = AV.Object.createWithoutData('user', user.userid);
+  todo.set('likes', [...likes]);
+  todo.save();
+  store.userInfo.likes = [...likes]
+}
+
+export function isLogin(){
+  const localPiniaData = JSON.parse(localStorage.getItem('china-pinia-info')||'{}')
+  const userInfo = localPiniaData.userInfo
+  return userInfo
+}
+
 export const initData = async () => {
-  await initAllImage()
-  await getData('scenic')
-  await getData('food')
+  // await initAllImage()
+  // await getData('scenic')
+  // await getData('food')
   await getData('porcelain')
   getData('userInfo')
 }

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { showToast, showLoadingToast, closeToast, showSuccessToast } from 'vant'
-import 'vant/es/toast/style';
+
 import { useRouter, useRoute } from 'vue-router'
 import { uploadImage, submitData } from '@/utils/useData.js'
 

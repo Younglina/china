@@ -1,28 +1,41 @@
 <script setup>
 import { reactive } from 'vue'
-import { submitData } from '@/utils/useData.js'
+import { submitData, queryUser } from '@/utils/useData.js'
 import { useStore } from '@/store'
+import { showFailToast } from 'vant'
 const store = useStore()
-const piniaInfo = localStorage.getItem('china-pinia-info') || {}
 
-const userForm = reactive({username:'',password:'',likes:[],comment:[]})
-const onSubmit = () => {
-  const piniaInfoData = JSON.parse(piniaInfo)
-  piniaInfoData.userInfo = userForm
-  localStorage.setItem('china-pinia-info', JSON.stringify(piniaInfoData))
-  store.userInfo = userForm
+const userForm = reactive({username:'',password:'',likes:[],comment:[],avatar:'avatar.jpeg'})
+const onSubmit = async () => {
+  const user = await queryUser(userForm.username, userForm.password)
+  if(!user){
+    showFailToast('用户名或密码错误')
+  }else{
+    store.userInfo = user
+    localStorage.setItem('china-pinia-info', JSON.stringify(store))
+  }
+}
+const onRegist = async () => {
+  const user = await queryUser(userForm.username)
+  if(user){
+    showFailToast('当前昵称已存在')
+  }else{
+    const finishData = await submitData('user', userForm)
+    store.userInfo = {...userForm, userid: finishData.id}
+    localStorage.setItem('china-pinia-info', JSON.stringify(store))
+  }
 }
 </script>
 <template>
   <div class="sign-page">
-    <van-form @submit="onSubmit">
+    <van-form>
       <van-cell-group inset>
         <van-field
           v-model="userForm.username"
-          name="用户名"
-          label="用户名"
-          placeholder="用户名"
-          :rules="[{ required: true, message: '请填写用户名' }]"
+          name="昵称"
+          label="昵称"
+          placeholder="昵称"
+          :rules="[{ required: true, message: '请填写昵称' }]"
         />
         <van-field
           v-model="userForm.password"
@@ -33,9 +46,12 @@ const onSubmit = () => {
           :rules="[{ required: true, message: '请填写密码' }]"
         />
       </van-cell-group>
-      <div style="margin: 16px;">
-        <van-button round block type="primary" native-type="submit">
-          提交
+      <div class="sign-action">
+        <van-button size="small" round block type="success" @click="onRegist">
+          注册
+        </van-button>
+        <van-button size="small" round block type="primary" @click="onSubmit">
+          登录
         </van-button>
       </div>
     </van-form>
@@ -49,6 +65,11 @@ const onSubmit = () => {
   align-items: center;
   justify-content: center;
   // background-image: url(https://younglina-1256042946.cos.ap-nanjing.myqcloud.com/yyc_3.jpeg);
-  background-size: 100% 100%;
+  background-size: cover;
+  background-position: center;
+}
+.sign-action{
+  margin: 16px;
+  display: flex;
 }
 </style>

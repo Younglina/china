@@ -5,6 +5,7 @@ import { Lazyload } from 'vant';
 import './utils/flexible.js'
 import { createPinia } from 'pinia'
 import './style.css';
+import 'vant/es/toast/style';
 const app = createApp(App)
 
 app.use(router)

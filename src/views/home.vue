@@ -1,7 +1,7 @@
 <script setup>
 import CommonCard from '@/components/CommonCard.vue'
 import { showLoadingToast, closeToast } from 'vant'
-import 'vant/es/toast/style';
+
 import { navCard } from '@/utils/useData.js'
 import { useRouter } from 'vue-router'
 import { useStore } from '@/store'
