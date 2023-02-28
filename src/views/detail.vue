@@ -1,12 +1,13 @@
 <script setup>
-import { showConfirmDialog, showImagePreview, showFailToast } from 'vant';
+import { showConfirmDialog, showFailToast } from 'vant';
 import 'vant/es/dialog/style';
 import 'vant/es/image-preview/style';
 import { useStore } from '@/store'
 import { guide } from '@/utils/useMap.js'
-import { getCommnet, setLike, isLogin } from '@/utils/useData.js'
+import { getCommnet, updataByKey, isLogin } from '@/utils/useData.js'
 import { useRouter, useRoute } from 'vue-router'
 import { ref, reactive, onBeforeMount } from 'vue'
+import CommnetList from '@/components/CommentList.vue'
 import Http from '@/utils/request.js'
 const ImageBaseUrl = 'https://younglina-1256042946.cos.ap-nanjing.myqcloud.com/'
 const router = useRouter()
@@ -21,19 +22,13 @@ onBeforeMount(async () => {
   // 获取对应的数据详情
   const { name, dataType } = route.query
   const store = useStore()
-  console.log(store)
   const dataList = store[dataType]
   const curData = dataList.find(item => item.key === name)
   detailData = curData || {}
-  isLike.value = store.userInfo?store.userInfo.likes.includes(detailData.key):false
+  isLike.value = store.userInfo ? store.userInfo.likes.includes(detailData.key) : false
   const txComment = await getCommnet(name);
   const { data: mockComment } = await Http.get('/commend')
-  aryComment.value = txComment.concat(mockComment).map(item => {
-    if (item.images) {
-      item.imagesArr = item.images.map(item => ImageBaseUrl + item)
-    }
-    return item
-  })
+  aryComment.value = txComment.concat(mockComment)
 })
 
 // 地图导航
@@ -55,26 +50,22 @@ const showCall = () => {
 }
 
 // 评论相关
-const randomAvatar = ['linear-gradient(to top, #c471f5 0%, #fa71cd 100%)', 'linear-gradient(to top, #48c6ef 0%, #6f86d6 100%)', 'linear-gradient(to right, #f78ca0 0%, #f9748f 19%, #fd868c 60%, #fe9a8b 100%)', 'linear-gradient(to top, #feada6 0%, #f5efef 100%)', 'linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%)', 'linear-gradient(to top, #accbee 0%, #e7f0fd 100%)', 'linear-gradient(to right, #74ebd5 0%, #9face6 100%)',]
 const toComment = () => {
-  router.push(`/page?areaKey=${detailData.key}`)
-}
-const imagePreview = (imgs, idx) => {
-  showImagePreview({
-    images: imgs,
-    startPosition: idx,
-    closeable: true,
-  })
+  if (!isLogin()) {
+    showFailToast('请去我的页面进行登录或注册')
+    return
+  }
+  router.push(`/page?areaKey=${detailData.key}&areaName=${detailData.name}`)
 }
 
 // 喜欢
 const handleLike = () => {
-  if(!isLogin()){
+  if (!isLogin()) {
     showFailToast('请去我的页面进行登录或注册')
     return
   }
   isLike.value = !isLike.value
-  setLike(detailData.key, isLike.value)
+  updataByKey('likes', {areaKey: detailData.key, isLike: isLike.value})
 }
 </script>
 
@@ -82,7 +73,7 @@ const handleLike = () => {
   <div class="detail-page">
     <van-swipe v-if="detailData.images.length" class="home-swipe" lazy-render autoplay="3000">
       <van-swipe-item v-for="item in detailData.images" :key="item.name">
-        <img class="home-swipe__image" :src="item"  :alt="item.name"/>
+        <img class="home-swipe__image" :src="item" :alt="item.name" />
       </van-swipe-item>
     </van-swipe>
     <van-empty v-else description="暂无图片" />
@@ -119,7 +110,7 @@ const handleLike = () => {
         <p class="wy-title">介绍</p>
         <template v-if="detailData.introduction">
           <p class="detail-info__intor">{{ detailData.introduction?.slice(0, 50) + '...' }}</p>
-          <div v-if="detailData.introduction.length>50" class="detail-info__showmore" @click="showMore = !showMore">
+          <div v-if="detailData.introduction.length > 50" class="detail-info__showmore" @click="showMore = !showMore">
             <p>查看更多</p>
           </div>
         </template>
@@ -132,25 +123,7 @@ const handleLike = () => {
       </div>
       <div class="detail-info">
         <van-button @click="toComment" type="primary" block size="small" round>去留言</van-button>
-        <div v-for="(item, idx) in aryComment" :key="idx" class="detail-comment">
-          <div class="detail-comment__user">
-            <div class="detail-comment__avatar" :style="{ backgroundImage: randomAvatar[idx % 10] }"></div>
-            <div>
-              <p class="detail-comment__username">{{ item.nickname }}</p>
-              <p class="detail-comment__time">{{ item.datetime }}</p>
-            </div>
-          </div>
-          <p class="detail-comment__content">{{ item.content }}</p>
-          <div v-if="item.imagesArr" class="detail-comment__imgs">
-            <van-image v-for="(img, idx) in item.imagesArr" @click="imagePreview(item.imagesArr, idx)" width="2rem"
-              height="2rem" fit="cover" lazy-load :key="item" :src="img">
-              <template v-slot:error>
-                加载失败
-              </template>
-            </van-image>
-          </div>
-          <van-divider />
-        </div>
+        <CommnetList :datalist="aryComment"></CommnetList>
       </div>
     </div>
   </div>
@@ -216,6 +189,7 @@ const handleLike = () => {
     justify-content: center;
     text-align: center;
     font-size: 12px;
+
     >div {
       min-width: 28px;
       padding: 0 4px;
@@ -257,43 +231,4 @@ const handleLike = () => {
   }
 }
 
-.detail-comment {
-  padding: 10px;
-
-  &__user {
-    display: flex;
-  }
-
-  &__avatar {
-    min-width: 30px;
-    height: 30px;
-    margin-right: 10px;
-    border-radius: 50%;
-  }
-
-  &__username {
-    font-weight: bold;
-  }
-
-  &__time {
-    font-size: 12px;
-    color: #666;
-  }
-
-  &__content {
-    font-size: 14px;
-    padding-top: 4px;
-  }
-
-  &__imgs {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 6px;
-  }
-
-  &__img {
-    width: 60px;
-    height: 60px;
-  }
-}
 </style>

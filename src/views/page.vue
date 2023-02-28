@@ -1,19 +1,20 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { showToast, showLoadingToast, closeToast, showSuccessToast } from 'vant'
-
+import { useStore } from '@/store'
 import { useRouter, useRoute } from 'vue-router'
-import { uploadImage, submitData } from '@/utils/useData.js'
+import { uploadImage, submitData, updataByKey } from '@/utils/useData.js'
 
 const route = useRoute()
 const router = useRouter()
-let commentObj = reactive({ content: '', nickname: '' }) // 留言
+let commentObj = reactive({ content: '' }) // 留言
 const fileList = ref([])
-const { areaKey } = route.query
+const { areaKey, areaName } = route.query
 
 async function setCommnetData() {
-  if (!commentObj.nickname) {
-    showToast('还没有填写昵称哦');
+  const store = useStore()
+  if (!store.userInfo) {
+    showToast('请去我的页面进行登录或注册');
     return
   }
   if (!commentObj.content && !fileList.value.length) {
@@ -32,12 +33,12 @@ async function setCommnetData() {
     commentImages = fileList.value.map(item => `${areaKey}_${+commentDate}_${item.file.name}`)
   }
   const commentData = {
-    "nickname": commentObj.nickname,
     "content": commentObj.content,
     "datetime": (commentDate.toLocaleString()).replaceAll('/', '-'),
     "images": commentImages
   }
-  await submitData(areaKey, commentData)
+  await updataByKey('comment', { ...commentData, areaKey, areaName})
+  await submitData(areaKey, {...commentData, "nickname": store.userInfo.username,})
   uploadImage(areaKey, fileList.value, +commentDate)
   closeToast();
   showSuccessToast({
@@ -54,7 +55,6 @@ async function setCommnetData() {
 <template>
   <van-form class="commnet-form" @submit="setCommnetData">
     <van-cell-group inset>
-      <van-field v-model="commentObj.nickname" style="margin-bottom: 10px;" label="昵称" placeholder="请输入昵称" />
       <van-field v-model="commentObj.content" style="margin-bottom: 10px;" label="留言" rows="2" autosize type="textarea"
         placeholder="说点什么吧~" />
       <van-field name="uploader" label="图片上传">
@@ -64,10 +64,10 @@ async function setCommnetData() {
       </van-field>
     </van-cell-group>
     <div class="action-button">
-      <van-button block small square @click="router.go(-1)">
+      <van-button block size="small" round type="success" @click="router.go(-1)">
         取消
       </van-button>
-      <van-button block small square type="primary" native-type="submit">
+      <van-button block size="small" round type="primary" native-type="submit">
         提交
       </van-button>
     </div>
@@ -84,9 +84,6 @@ async function setCommnetData() {
 
   .action-button {
     display: flex;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
   }
 }
 </style>

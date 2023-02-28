@@ -2,12 +2,13 @@
 import sign from './sign.vue'
 import { ref, computed } from 'vue'
 import { ImageBaseUrl } from '@/utils/useData.js'
+import CommnetList from '@/components/CommentList.vue'
 import { useStore } from '@/store'
 const store = useStore()
-let userInfo = computed(()=>{
+let userInfo = computed(() => {
   const info = store.userInfo
-  if(info){
-    info.avatar = ImageBaseUrl+info.avatar
+  if (info) {
+    info.avatar = ImageBaseUrl + info.avatar
   }
   return info
 })
@@ -30,6 +31,10 @@ const onSignOut = () => {
         <div>{{ userInfo.comment.length }} 评论</div>
       </div>
     </div>
+    <div v-if="userInfo.comment.length>0" class="card">
+      <div class="wy-title">我的评论</div>
+      <CommnetList type="myComment" titleKey="areaName" :datalist="userInfo.comment"/>
+    </div>
     <van-button round block size="small" type="primary" @click="onSignOut">
       退出登录
     </van-button>
@@ -37,17 +42,21 @@ const onSignOut = () => {
   <sign v-else></sign>
 </template>
 <style scoped lang='scss'>
-.userinfo{
+.userinfo {
   padding: 50px 20px 0;
-  .card{
+
+  .card {
     border-radius: 8px;
     box-shadow: 0px 8px 16px 0px rgb(0 0 0 / 3%);
     background: #FFFFFF;
     padding: 10px;
+    margin-bottom: 20px;
   }
-  &-base{
+
+  &-base {
     position: relative;
-    img{
+
+    img {
       position: absolute;
       width: 1.6rem;
       height: 1.6rem;
@@ -56,24 +65,28 @@ const onSignOut = () => {
       transform: translate(-50%, -50%);
     }
   }
-  &-username{
+
+  &-username {
     padding-top: 1rem;
     text-align: center;
     font-size: 0.5rem;
     font-weight: bold;
   }
-  &-ext{
+
+  &-ext {
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.2rem;
     color: #888;
-    >div{
+
+    >div {
       position: relative;
       padding: 4px 6px;
     }
-    div + div{
-      &::before{
+
+    div+div {
+      &::before {
         content: '';
         width: 1px;
         height: 50%;
@@ -85,5 +98,4 @@ const onSignOut = () => {
       }
     }
   }
-}
-</style>
+}</style>

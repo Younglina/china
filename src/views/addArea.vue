@@ -52,11 +52,11 @@ const onSubmit = async () => {
     const timeKey = +new Date()
     submitData.tags = submitData.tags.replaceAll('，', ',').split(',')
     const oldKey = submitData.key
-    submitData.key = `${oldKey}_${timeKey}`
+    submitData.key = `${oldKey}wy${timeKey}`
 
     const type = navCard.find(item => item.text === dataType.value).value
     await submitData(type, submitData)
-    uploadImage(oldKey, fileList.value, timeKey)
+    uploadImage(submitData.key, fileList.value, timeKey)
     showSuccessToast({
       message: '提交成功',
       duration: 1000

@@ -7,7 +7,7 @@ const route = useRoute()
 const active = ref('');
 watch(route, (val) => {
   active.value = val.name
-  if(!tabs.some(t=>t.name===val.name)){
+  if (!tabs.some(t => t.name === val.name)) {
     active.value = ''
   }
 })
@@ -18,12 +18,7 @@ watch(route, (val) => {
     <router-view></router-view>
   </main>
   <van-tabbar v-model="active">
-    <van-tabbar-item v-for="item in tabs" 
-      :key="item.name" 
-      :name="item.name" 
-      :to="item.path" 
-      :icon="item.icon"
-      replace>
+    <van-tabbar-item v-for="item in tabs" :key="item.name" :name="item.name" :to="item.path" :icon="item.icon">
       {{ item.label }}
     </van-tabbar-item>
   </van-tabbar>

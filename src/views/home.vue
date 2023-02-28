@@ -17,28 +17,28 @@ const toView = (key) => {
   closeToast()
 }
 const store = useStore()
-const { scenic,food,porcelain} = storeToRefs(store)
+const { scenic, food, porcelain } = storeToRefs(store)
 </script>
 
 <template>
-    <div class="home-page">
-      <van-swipe class="home-swipe" lazy-render autoplay="3000">
-        <van-swipe-item v-for="item in scenic" :key="item.name">
-          <img class="home-swipe__image" :src="item.images[0]" :alt="item.name"/>
-        </van-swipe-item>
-      </van-swipe>
-      <div class="home-page-nav">
-        <div v-for="item in navCard" :key="item.value" @click="toView(item.value)">
-          <div class="home-page-nav__image">
-            <img :src="item.image" loading="lazy" />
-          </div>
-          <p>{{ item.text }}</p>
+  <div class="home-page">
+    <van-swipe class="home-swipe" lazy-render autoplay="3000">
+      <van-swipe-item v-for="item in scenic" :key="item.name">
+        <img class="home-swipe__image" :src="item.images[0]" :alt="item.name" />
+      </van-swipe-item>
+    </van-swipe>
+    <div class="home-page-nav">
+      <div v-for="item in navCard" :key="item.value" @click="toView(item.value)">
+        <div class="home-page-nav__image">
+          <img :src="item.image" loading="lazy" />
         </div>
+        <p>{{ item.text }}</p>
       </div>
-      <CommonCard card-type="scenic" :card-data="scenic" />
-      <CommonCard card-type="food" :card-data="food" />
-      <CommonCard card-type="porcelain" :card-data="porcelain" />
     </div>
+    <CommonCard card-type="scenic" :card-data="scenic" />
+    <CommonCard card-type="food" :card-data="food" />
+    <CommonCard card-type="porcelain" :card-data="porcelain" />
+  </div>
 </template>
 
 <style lang="scss" scoped>
