@@ -1,5 +1,6 @@
 import COS from "cos-js-sdk-v5";
 import AV from 'leancloud-storage'
+import { useStore } from '@/store'
 AV.init({
     appId: 'eoqcmwvh2rt97nbGb2QBvMk3-gzGzoHsz',
     appKey: '1VZqMQ3JThd1fuTCyCbYTtsK',
@@ -76,7 +77,7 @@ export const getCommnet = async (type) => {
     return []
   }
 }
-export const uploadComment = async (type, data) => {
+export const submitData = async (type, data) => {
   const commentObject = AV.Object(type);
   for(let key in data){
     commentObject.set(key, data[key]);
@@ -86,16 +87,23 @@ export const uploadComment = async (type, data) => {
 }
 
 export const getData = async (type) => {
+  const store = useStore()
   const query = new AV.Query(type);
   try{
-    const requestData = await query.find()
-    const formatData = requestData.map(item=>item.attributes)
-    formatData.map(item=>{
-      item.images = imagesDataHash[item.key.split('_')[0]] || [`${ImageBaseUrl}noImg.svg`]
-    })
     const localPiniaData = JSON.parse(localStorage.getItem('china-pinia-info'))
+    let formatData = []
+    if(type!=='userInfo'){
+      const requestData = await query.find()
+      formatData = requestData.map(item=>item.attributes)
+      formatData.map(item=>{
+        item.images = imagesDataHash[item.key.split('_')[0]] || [`${ImageBaseUrl}noImg.svg`]
+      })
+    }else{
+      formatData = localPiniaData.userInfo || null
+    }
     const piniaData = localPiniaData || {}
     piniaData[type] = formatData
+    store[type] = formatData
     localStorage.setItem('china-pinia-info', JSON.stringify(piniaData))
     return formatData
   }catch(e){
@@ -109,6 +117,7 @@ export const initData = async () => {
   await getData('scenic')
   await getData('food')
   await getData('porcelain')
+  getData('userInfo')
 }
 
 export const navCard = [
@@ -116,4 +125,9 @@ export const navCard = [
   { text: '娱乐', value: 'play', image: `${ImageBaseUrl}game.svg` },
   { text: '景点', value: 'scenic', image: `${ImageBaseUrl}scenic.svg` },
   { text: '瓷器', value: 'porcelain', image: `${ImageBaseUrl}porcelain.svg` },
+]
+
+export const tabs = [
+  {name: 'Home', path: '/', label: '主页', icon: 'wap-home-o'},
+  {name: 'My', path: '/my', label: '我的', icon: 'user-o'},
 ]

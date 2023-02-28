@@ -3,7 +3,7 @@ import { ref, reactive } from 'vue'
 import { showToast, showLoadingToast, closeToast, showSuccessToast } from 'vant'
 import 'vant/es/toast/style';
 import { useRouter, useRoute } from 'vue-router'
-import { uploadImage, uploadComment } from '@/utils/useData.js'
+import { uploadImage, submitData } from '@/utils/useData.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -37,7 +37,7 @@ async function setCommnetData() {
     "datetime": (commentDate.toLocaleString()).replaceAll('/', '-'),
     "images": commentImages
   }
-  await uploadComment(areaKey, commentData)
+  await submitData(areaKey, commentData)
   uploadImage(areaKey, fileList.value, +commentDate)
   closeToast();
   showSuccessToast({
@@ -76,7 +76,6 @@ async function setCommnetData() {
 <style lang="scss" scoped>
 .commnet-form {
   position: relative;
-  height: 100vh;
   overflow-y: auto;
 
   :deep(.van-cell-group) {

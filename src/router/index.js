@@ -6,6 +6,7 @@ const routes = [
   { path: '/preview', name: 'Preview', component: () => import('@/views/previewList.vue') , meta: { keywords: '景德镇,景德镇陶瓷博物馆,陶溪川,御窑厂,景德镇旅游,景德镇美食,' }},
   { path: '/detail', name: 'Detail', component: () => import('@/views/detail.vue'), meta: { keywords: '景德镇,景德镇陶瓷博物馆,陶溪川,御窑厂,景德镇旅游,景德镇美食,' } },
   { path: '/addArea', name: 'AddArea', component: () => import('@/views/addArea.vue'), meta: { keywords: '景德镇,景德镇陶瓷博物馆,陶溪川,御窑厂,景德镇旅游,景德镇美食,' } },
+  { path: '/my', name: 'My', component: () => import('@/views/my.vue') },
   { path: '/test', name: 'test', component: () => import('@/views/test.vue') },
 ]
 

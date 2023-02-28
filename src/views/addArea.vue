@@ -1,7 +1,7 @@
 
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
-import { navCard, uploadComment, uploadImage } from '@/utils/useData.js'
+import { navCard, submitData, uploadImage } from '@/utils/useData.js'
 import { showLoadingToast, showSuccessToast, showFailToast } from 'vant'
 import 'vant/es/toast/style';
 import AMapLoader from '@amap/amap-jsapi-loader';
@@ -55,7 +55,7 @@ const onSubmit = async () => {
     submitData.key = `${oldKey}_${timeKey}`
 
     const type = navCard.find(item => item.text === dataType.value).value
-    await uploadComment(type, submitData)
+    await submitData(type, submitData)
     uploadImage(oldKey, fileList.value, timeKey)
     showSuccessToast({
       message: '提交成功',
@@ -157,7 +157,6 @@ const onConfirmAddress = (v) => {
 
 <style lang="scss" scoped>
 .add-page {
-  height: 100vh;
   overflow-y: auto;
 }
 </style>

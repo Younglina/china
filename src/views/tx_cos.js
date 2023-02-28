@@ -50,7 +50,7 @@ export const getCommnet = async (type) => {
   return commnetData
 }
 
-export const uploadComment = async (type, data) => {
+export const submitData = async (type, data) => {
   const myCos = new COS({
     ...COS_CONFIG,
     SimpleUploadMethod: 'putObject',

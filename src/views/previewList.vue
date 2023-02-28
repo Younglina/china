@@ -14,7 +14,7 @@ scenicArea.value = store[dataType]
 </script>
 
 <template>
-  <main class="preview-page">
+  <div class="preview-page">
     <h3>占个位置</h3>
     <div class="card">
       <div v-for="item in scenicArea" class="card-item" :key="item.name" @click="toDetail(item.key)">
@@ -30,7 +30,7 @@ scenicArea.value = store[dataType]
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -51,8 +51,6 @@ scenicArea.value = store[dataType]
         margin-bottom: 12px;
         object-fit: cover;
         border-radius: 6px;
-        // border-top-left-radius: 50%;
-        // border-top-right-radius: 50%;
       }
 
       p {
@@ -65,17 +63,18 @@ scenicArea.value = store[dataType]
         justify-content: space-between;
         height: calc(100% - 180px);
       }
-
       &__name {
         font-weight: 600;
       }
 
       &__desc {
         color: #555;
+        font-size: 12px;
       }
 
       &__tag {
         color: #888;
+        font-size: 12px;
         display: flex;
         justify-content: space-between;
       }

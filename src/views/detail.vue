@@ -2,7 +2,7 @@
 import { showConfirmDialog, showImagePreview } from 'vant';
 import 'vant/es/dialog/style';
 import 'vant/es/image-preview/style';
-import { getStore } from '@/store'
+import { useStore } from '@/store'
 import { guide } from '@/utils/useMap.js'
 import { getCommnet } from '@/utils/useData.js'
 import { useRouter, useRoute } from 'vue-router'
@@ -16,7 +16,7 @@ let detailData = reactive({}) // 数据详情
 let isLike = ref(false) // 是否喜欢
 let showMore = ref(false) // 查看更多
 let aryComment = ref([])
-const store = getStore()
+const store = useStore()
 
 onBeforeMount(async () => {
   // 获取对应的数据详情
@@ -67,7 +67,7 @@ const imagePreview = (imgs, idx) => {
 </script>
 
 <template>
-  <main class="detail-page">
+  <div class="detail-page">
     <van-swipe v-if="detailData.images.length" class="home-swipe" lazy-render autoplay="3000">
       <van-swipe-item v-for="item in detailData.images" :key="item.name">
         <img class="home-swipe__image" :src="item"  :alt="item.name"/>
@@ -141,7 +141,7 @@ const imagePreview = (imgs, idx) => {
         </div>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -163,14 +163,13 @@ const imagePreview = (imgs, idx) => {
 }
 
 .detail-page {
-  height: 100vh;
   overflow-y: auto;
 }
 
 .detail-container {
   position: absolute;
   margin-top: -26px;
-  padding: 0 8px;
+  padding: 0 8px var(--van-tabbar-height);
   overflow-y: auto;
   border-radius: 20px;
   // box-shadow: 18px 10px 20px #ffffff, -18px 10px 20px #ffffff;

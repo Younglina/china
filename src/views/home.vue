@@ -4,8 +4,8 @@ import { showLoadingToast, closeToast } from 'vant'
 import 'vant/es/toast/style';
 import { navCard } from '@/utils/useData.js'
 import { useRouter } from 'vue-router'
-import { getStore } from '@/store'
-import { ref } from 'vue'
+import { useStore } from '@/store'
+import { storeToRefs } from 'pinia';
 const router = useRouter()
 const toView = (key) => {
   showLoadingToast({
@@ -16,39 +16,33 @@ const toView = (key) => {
   router.push(`/preview?type=${key}`)
   closeToast()
 }
-const scenicData = ref([])
-const foodData = ref([])
-const porcelainData = ref([])
-const store = getStore()
-scenicData.value = store.scenic
-foodData.value = store.food
-porcelainData.value = store.porcelain
+const store = useStore()
+const { scenic,food,porcelain} = storeToRefs(store)
 </script>
 
 <template>
-  <main class="home-page">
-    <van-swipe class="home-swipe" lazy-render autoplay="3000">
-      <van-swipe-item v-for="item in scenicData" :key="item.name">
-        <img class="home-swipe__image" :src="item.images[0]" :alt="item.name"/>
-      </van-swipe-item>
-    </van-swipe>
-    <div class="home-page-nav">
-      <div v-for="item in navCard" :key="item.value" @click="toView(item.value)">
-        <div class="home-page-nav__image">
-          <img :src="item.image" loading="lazy" />
+    <div class="home-page">
+      <van-swipe class="home-swipe" lazy-render autoplay="3000">
+        <van-swipe-item v-for="item in scenic" :key="item.name">
+          <img class="home-swipe__image" :src="item.images[0]" :alt="item.name"/>
+        </van-swipe-item>
+      </van-swipe>
+      <div class="home-page-nav">
+        <div v-for="item in navCard" :key="item.value" @click="toView(item.value)">
+          <div class="home-page-nav__image">
+            <img :src="item.image" loading="lazy" />
+          </div>
+          <p>{{ item.text }}</p>
         </div>
-        <p>{{ item.text }}</p>
       </div>
+      <CommonCard card-type="scenic" :card-data="scenic" />
+      <CommonCard card-type="food" :card-data="food" />
+      <CommonCard card-type="porcelain" :card-data="porcelain" />
     </div>
-    <CommonCard card-type="scenic" :card-data="scenicData" />
-    <CommonCard card-type="food" :card-data="foodData" />
-    <CommonCard card-type="porcelain" :card-data="porcelainData" />
-  </main>
 </template>
 
 <style lang="scss" scoped>
 .home-page {
-  height: 100vh;
   width: 100vw;
   padding: 10px;
   box-sizing: border-box;
