@@ -26,7 +26,7 @@ const imagePreview = (imgs, idx) => {
       </div>
     </div>
     <p class="detail-comment__content">{{ item.content }}</p>
-    <div v-if="item.images" class="detail-comment__imgs">
+    <div v-if="item.images && item.images.length>0" class="detail-comment__imgs">
       <van-image v-for="(img, idx) in item.images" @click="imagePreview(item.images, idx)" width="2rem" height="2rem"
         fit="cover" lazy-load :key="item" :src="ImageBaseUrl + img">
         <template v-slot:error>

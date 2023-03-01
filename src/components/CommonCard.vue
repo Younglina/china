@@ -26,7 +26,7 @@ const toDetail = (name) => {
 
 <template>
   <div class="common-card">
-    <p class="wy-title">特色{{ Strs[props.cardType] }}</p>
+    <p class="wy-title">特色{{ Strs }}</p>
     <div class="card-body">
       <div v-for="item in cardData.slice(0, 5)" class="card-body__item" :key="item.name" @click="toDetail(item.key)">
         <img class="card-body__image" :src="item.images[0]" alt="">

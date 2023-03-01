@@ -13,11 +13,21 @@ const watchConsole = watch(clickCount, () => {
   }
 })
 
+let likesList = ref([])
 const store = useStore()
 let userInfo = computed(() => {
   const info = store.userInfo
   if (info) {
-    info.avatar = ImageBaseUrl + info.avatar
+    info.avatar = info.avatar?(ImageBaseUrl + info.avatar):''
+    if(info.likes.length>0){
+      const arr = [...store.food,...store.scenic,...store.porcelain,...store.play].filter(item=>info.likes.includes(item.key))
+      likesList.value = arr.map(item=>{
+        return {
+          areaName: item.name,
+          content: item.desc
+        }
+      })
+    }
   }
   return info
 })
@@ -28,22 +38,30 @@ const onSignOut = () => {
   piniaData.userInfo = null
   localStorage.setItem('china-pinia-info', JSON.stringify(piniaData))
 }
+
+const active = ref(0);
 </script>
 <template>
   <div v-if="userInfo" class="userinfo">
     <div class="userinfo-base card">
-      <!-- <img :src="userInfo.avatar" alt="头像"> -->
-      <img src="../assets/images/avatar.jpeg" alt="头像" @click="clickCount++">
+      <img v-if="userInfo.avatar" :src="userInfo.avatar" alt="头像" @click="clickCount++">
+      <img v-else src="../assets/images/avatar.jpeg" alt="头像" @click="clickCount++">
       <div class="userinfo-username">{{ userInfo.username }}</div>
       <div class="userinfo-ext">
         <div>{{ userInfo.likes.length }} 喜欢</div>
         <div>{{ userInfo.comment.length }} 评论</div>
       </div>
     </div>
-    <div v-if="userInfo.comment.length>0" class="card">
-      <div class="wy-title">我的评论</div>
-      <CommnetList type="myComment" titleKey="areaName" :datalist="userInfo.comment"/>
-    </div>
+    <van-tabs v-model:active="active" class="card">
+      <van-tab title="我的喜欢">
+        <CommnetList v-if="likesList.length<0" type="myLikes" titleKey="areaName" :datalist="likesList"/>
+        <van-empty v-else description="暂无喜欢" />
+      </van-tab>
+      <van-tab title="我的评论">
+        <CommnetList v-if="likesList.length>0" type="myComment" titleKey="areaName" :datalist="userInfo.comment"/>
+        <van-empty v-else description="暂无评论" />
+      </van-tab>
+    </van-tabs>
     <van-button round block size="small" type="primary" @click="onSignOut">
       退出登录
     </van-button>

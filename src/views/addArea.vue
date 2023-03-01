@@ -48,15 +48,15 @@ const onSubmit = async () => {
     loadingType: 'spinner',
   });
   try {
-    const submitData = { ...formData }
+    const submitForm = { ...formData }
     const timeKey = +new Date()
-    submitData.tags = submitData.tags.replaceAll('，', ',').split(',')
-    const oldKey = submitData.key
-    submitData.key = `${oldKey}wy${timeKey}`
+    submitForm.tags = submitForm.tags.replaceAll('，', ',').split(',')
+    const oldKey = submitForm.key
+    submitForm.key = `${oldKey}wy${timeKey}`
 
     const type = navCard.find(item => item.text === dataType.value).value
-    await submitData(type, submitData)
-    uploadImage(submitData.key, fileList.value, timeKey)
+    await submitData(type, submitForm)
+    uploadImage(submitForm.key, fileList.value, timeKey)
     showSuccessToast({
       message: '提交成功',
       duration: 1000
