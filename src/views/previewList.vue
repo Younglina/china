@@ -1,12 +1,19 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
+import { showLoadingToast, closeToast } from 'vant'
 import { getStore } from '@/store'
 import { ref } from 'vue'
 const router = useRouter()
 const route = useRoute()
 const dataType = route.query.type
 const toDetail = (name) => {
+  showLoadingToast({
+    message: '加载中...',
+    duration: 0,
+    loadingType: 'spinner',
+  });
   router.push({ path: '/detail', query: { name, dataType } })
+  closeToast()
 }
 const scenicArea = ref([])
 const store = getStore()

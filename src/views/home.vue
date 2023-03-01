@@ -1,6 +1,5 @@
 <script setup>
 import CommonCard from '@/components/CommonCard.vue'
-import { showLoadingToast, closeToast } from 'vant'
 
 import { navCard } from '@/utils/useData.js'
 import { useRouter } from 'vue-router'
@@ -8,13 +7,7 @@ import { useStore } from '@/store'
 import { storeToRefs } from 'pinia';
 const router = useRouter()
 const toView = (key) => {
-  showLoadingToast({
-    message: '加载中...',
-    duration: 0,
-    loadingType: 'spinner',
-  });
   router.push(`/preview?type=${key}`)
-  closeToast()
 }
 const store = useStore()
 const { scenic, food, porcelain } = storeToRefs(store)

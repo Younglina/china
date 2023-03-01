@@ -12,7 +12,8 @@ const onSubmit = async () => {
     showFailToast('用户名或密码错误')
   } else {
     store.userInfo = user
-    localStorage.setItem('china-pinia-info', JSON.stringify(store))
+    const states = store.$state
+    localStorage.setItem('china-pinia-info', JSON.stringify({...states, userInfo: user}))
   }
 }
 const onRegist = async () => {
@@ -22,7 +23,8 @@ const onRegist = async () => {
   } else {
     const finishData = await submitData('user', userForm)
     store.userInfo = { ...userForm, userid: finishData.id }
-    localStorage.setItem('china-pinia-info', JSON.stringify(store))
+    const states = store.$state
+    localStorage.setItem('china-pinia-info', JSON.stringify({...states, userInfo: {...userForm, userid: finishData.id}}))
   }
 }
 </script>

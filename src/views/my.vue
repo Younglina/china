@@ -1,9 +1,18 @@
 <script setup>
 import sign from './sign.vue'
-import { ref, computed } from 'vue'
+import { watch, computed, ref } from 'vue'
 import { ImageBaseUrl } from '@/utils/useData.js'
 import CommnetList from '@/components/CommentList.vue'
 import { useStore } from '@/store'
+import vconsole from 'vconsole'
+let clickCount = ref(0)
+const watchConsole = watch(clickCount, () => {
+  if(clickCount.value>=5){
+    new vconsole();
+    watchConsole();
+  }
+})
+
 const store = useStore()
 let userInfo = computed(() => {
   const info = store.userInfo
@@ -24,7 +33,7 @@ const onSignOut = () => {
   <div v-if="userInfo" class="userinfo">
     <div class="userinfo-base card">
       <!-- <img :src="userInfo.avatar" alt="头像"> -->
-      <img src="../assets/images/avatar.jpeg" alt="头像">
+      <img src="../assets/images/avatar.jpeg" alt="头像" @click="clickCount++">
       <div class="userinfo-username">{{ userInfo.username }}</div>
       <div class="userinfo-ext">
         <div>{{ userInfo.likes.length }} 喜欢</div>

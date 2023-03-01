@@ -1,14 +1,26 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import { navCard } from '@/utils/useData.js'
+import { computed } from 'vue'
+import { showLoadingToast, closeToast } from 'vant'
 
-const Strs = {scenic: '景点', food: '小吃', play: '娱乐', porcelain: '瓷器'}
+const Strs = computed(()=>{
+  const types = navCard.find(item=>item.value===props.cardType)
+  return types?types.text:''
+})
 const props = defineProps({
   cardType: String,
   cardData: Array
 })
 const router = useRouter()
 const toDetail = (name) => {
+  showLoadingToast({
+    message: '加载中...',
+    duration: 0,
+    loadingType: 'spinner',
+  });
   router.push({ path: '/detail', query: { name, dataType: props.cardType } })
+  closeToast()
 }
 </script>
 
