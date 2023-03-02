@@ -9,7 +9,7 @@ const route = useRoute()
 const router = useRouter()
 let commentObj = reactive({ content: '' }) // 留言
 const fileList = ref([])
-const { areaKey, areaName } = route.query
+const { areaKey, areaName, dataType } = route.query
 
 async function setCommnetData() {
   const store = useStore()
@@ -37,7 +37,7 @@ async function setCommnetData() {
     "datetime": (commentDate.toLocaleString()).replaceAll('/', '-'),
     "images": commentImages
   }
-  await updataByKey('comment', { ...commentData, areaKey, areaName})
+  await updataByKey('comment', { ...commentData, areaKey, areaName, dataType})
   await submitData(areaKey, {...commentData, "nickname": store.userInfo.username,})
   uploadImage(areaKey, fileList.value, +commentDate)
   closeToast();

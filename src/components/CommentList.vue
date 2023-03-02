@@ -1,7 +1,8 @@
 <script setup>
 import { showImagePreview } from 'vant';
 import { ImageBaseUrl } from '@/utils/useData.js'
-defineProps({
+import { useRouter } from 'vue-router'
+const props = defineProps({
   datalist: { default: [] },
   type: { default: 'detail' },
   titleKey: { default: 'nickname' },
@@ -14,9 +15,16 @@ const imagePreview = (imgs, idx) => {
     closeable: true,
   })
 }
+
+const router = useRouter()
+const handleListClick = (item) => {
+  if(props.type!=='detail'){
+    router.push({ path: '/detail', query: { name: item.key || item.areaKey, dataType: item.dataType } })
+  }
+}
 </script>
 <template>
-  <div v-for="(item, idx) in datalist" :key="idx" class="detail-comment">
+  <div v-for="(item, idx) in datalist" @click.stop="handleListClick(item)" :key="idx" class="detail-comment">
     <div class="detail-comment__user">
       <div v-if="type === 'detail'" class="detail-comment__avatar" :style="{ backgroundImage: randomAvatar[idx % 10] }">
       </div>
@@ -27,7 +35,7 @@ const imagePreview = (imgs, idx) => {
     </div>
     <p class="detail-comment__content">{{ item.content }}</p>
     <div v-if="item.images && item.images.length>0" class="detail-comment__imgs">
-      <van-image v-for="(img, idx) in item.images" @click="imagePreview(item.images, idx)" width="2rem" height="2rem"
+      <van-image v-for="(img, idx) in item.images" @click.stop="imagePreview(item.images, idx)" width="2rem" height="2rem"
         fit="cover" lazy-load :key="item" :src="ImageBaseUrl + img">
         <template v-slot:error>
           加载失败

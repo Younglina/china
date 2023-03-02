@@ -55,6 +55,7 @@ const onSubmit = async () => {
     submitForm.key = `${oldKey}wy${timeKey}`
 
     const type = navCard.find(item => item.text === dataType.value).value
+    submitForm.dataType = type
     await submitData(type, submitForm)
     uploadImage(submitForm.key, fileList.value, timeKey)
     showSuccessToast({
@@ -150,7 +151,8 @@ const onConfirmAddress = (v) => {
           <van-uploader v-model="fileList" multiple :max-count="9" />
         </template>
       </van-field>
-      <van-button round block type="primary" native-type="submit" loading-type="spinner" :loading="submitLoading">提交</van-button>
+      <van-button round block type="primary" native-type="submit" loading-type="spinner"
+        :loading="submitLoading">提交</van-button>
     </van-form>
   </div>
 </template>

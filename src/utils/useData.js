@@ -19,6 +19,7 @@ const BUCKET_CONFIG = {
   Region: "ap-nanjing",
 }
 export const initAllImage = async () => {
+  const store = useStore()
   const myCos = new COS(COS_CONFIG);
   const cosData = await myCos.getBucket({
     Bucket: "younglina-1256042946",
@@ -36,6 +37,7 @@ export const initAllImage = async () => {
       }
     // }
   })
+  store.allImages = imagesDataHash
 }
 
 export const uploadImage = async (type, files, timekey) => {
@@ -128,6 +130,16 @@ export async function queryUser(name, pwd) {
   const data = await query.find()
   if (data.length > 0) {
     return { ...data[0].attributes, userid: data[0].id }
+  }
+  return null
+}
+
+export async function queryByKey({tableName, key, value}) {
+  const query = new AV.Query(tableName);
+  query.equalTo(key, value);
+  const data = await query.find()
+  if (data.length > 0) {
+    return { ...data[0].attributes }
   }
   return null
 }

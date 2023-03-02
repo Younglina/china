@@ -4,8 +4,7 @@ export const useStore = defineStore('store', {
   state: () => {
     return {
       userInfo: null,
-      iLikes: [],
-      counter: 0,
+      allImages: null,
       scenic: [],
       food: [],
       play: [],

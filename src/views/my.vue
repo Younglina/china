@@ -23,8 +23,10 @@ let userInfo = computed(() => {
       const arr = [...store.food,...store.scenic,...store.porcelain,...store.play].filter(item=>info.likes.includes(item.key))
       likesList.value = arr.map(item=>{
         return {
-          areaName: item.name,
-          content: item.desc
+          areaName: item.name, // 中文名 展示用
+          key: item.key, // key值 对应列表查询用
+          dataType: item.dataType, // food||scenic等 对应列表查询用
+          content: item.desc, // 描述
         }
       })
     }
@@ -54,7 +56,7 @@ const active = ref(0);
     </div>
     <van-tabs v-model:active="active" class="card">
       <van-tab title="我的喜欢">
-        <CommnetList v-if="likesList.length<0" type="myLikes" titleKey="areaName" :datalist="likesList"/>
+        <CommnetList v-if="likesList.length>0" type="myLikes" titleKey="areaName" :datalist="likesList"/>
         <van-empty v-else description="暂无喜欢" />
       </van-tab>
       <van-tab title="我的评论">

@@ -4,32 +4,33 @@ import 'vant/es/dialog/style';
 import 'vant/es/image-preview/style';
 import { useStore } from '@/store'
 import { guide } from '@/utils/useMap.js'
-import { getCommnet, updataByKey, isLogin } from '@/utils/useData.js'
+import { getCommnet, updataByKey, queryByKey, isLogin } from '@/utils/useData.js'
 import { useRouter, useRoute } from 'vue-router'
-import { ref, reactive, onBeforeMount } from 'vue'
+import { ref, reactive, onBeforeMount, computed } from 'vue'
 import CommnetList from '@/components/CommentList.vue'
 import Http from '@/utils/request.js'
-const ImageBaseUrl = 'https://younglina-1256042946.cos.ap-nanjing.myqcloud.com/'
 const router = useRouter()
 const route = useRoute()
 
 let detailData = reactive({}) // 数据详情
-let isLike = ref(false) // 是否喜欢
 let showMore = ref(false) // 查看更多
+let loading = ref(true)
 let aryComment = ref([])
+const { name, dataType } = route.query
 
 onBeforeMount(async () => {
   // 获取对应的数据详情
-  const { name, dataType } = route.query
-  const store = useStore()
-  const dataList = store[dataType]
-  const curData = dataList.find(item => item.key === name)
+  const curData = await queryByKey({ tableName: dataType, key: 'key', value: name })
   detailData = curData || {}
-  isLike.value = store.userInfo ? store.userInfo.likes.includes(detailData.key) : false
+  loading.value = false
   const txComment = await getCommnet(name);
   const { data: mockComment } = await Http.get('/commend')
   aryComment.value = txComment.concat(mockComment)
 })
+
+const store = useStore()
+const isLike = computed(() => store.userInfo ? store.userInfo.likes.includes(detailData.key) : false)
+const dataImages = computed(() => store.allImages ? store.allImages[name] : [])
 
 // 地图导航
 const actions = [{ name: '高德地图', type: 'gd' }, { name: '百度地图', type: 'bd' }]
@@ -55,7 +56,7 @@ const toComment = () => {
     showFailToast('请去我的页面进行登录或注册')
     return
   }
-  router.push(`/page?areaKey=${detailData.key}&areaName=${detailData.name}`)
+  router.push(`/page?areaKey=${detailData.key}&areaName=${detailData.name}&dataType=${detailData.dataType}`)
 }
 
 // 喜欢
@@ -64,20 +65,20 @@ const handleLike = () => {
     showFailToast('请去我的页面进行登录或注册')
     return
   }
-  isLike.value = !isLike.value
-  updataByKey('likes', {areaKey: detailData.key, isLike: isLike.value})
+  updataByKey('likes', { areaKey: detailData.key, isLike: !isLike.value })
 }
 </script>
 
 <template>
   <div class="detail-page">
-    <van-swipe v-if="detailData.images.length" class="home-swipe" lazy-render autoplay="3000">
-      <van-swipe-item v-for="item in detailData.images" :key="item.name">
+    <van-swipe v-if="dataImages && dataImages.length" class="home-swipe" lazy-render autoplay="3000">
+      <van-swipe-item v-for="item in dataImages" :key="item.name">
         <img class="home-swipe__image" :src="item" :alt="item.name" />
       </van-swipe-item>
     </van-swipe>
     <van-empty v-else description="暂无图片" />
-    <div class="detail-container">
+    <van-skeleton v-if="loading" title :row="3" />
+    <div v-else class="detail-container">
       <div class="detail-info">
         <div class="detail-info__title">
           <p>{{ detailData.name }}</p>
@@ -230,5 +231,4 @@ const handleLike = () => {
     color: #1989fa;
   }
 }
-
 </style>
