@@ -73,7 +73,9 @@ export const getCommnet = async (type) => {
   const query = new AV.Query(type);
   try {
     const requestData = await query.find()
-    const formatData = requestData.map(item => item.attributes)
+    const formatData = requestData.map(item => {
+      return {...item.attributes, id: item.id}
+    })
     return formatData
   } catch (e) {
     return []
@@ -88,37 +90,6 @@ export const submitData = async (type, data) => {
   const finishComment = await commentObject.save()
   console.log(finishComment, 'comment finish')
   return finishComment
-}
-
-export const getData = async (type) => {
-  const store = useStore()
-  try {
-    const localPiniaData = JSON.parse(localStorage.getItem('china-pinia-info') || '{}')
-    let formatData = []
-    if (type !== 'userInfo') {
-      const query = new AV.Query(type);
-      const requestData = await query.find()
-      formatData = requestData.map(item => item.attributes)
-      formatData.map(item => {
-        item.images = imagesDataHash[item.key.split('_')[0]] || [noImg]
-      })
-    } else {
-      const userInfo = localPiniaData.userInfo || null
-      if (userInfo) {
-        formatData = await queryUser(userInfo.username)
-      } else {
-        formatData = null
-      }
-    }
-    const piniaData = localPiniaData
-    piniaData[type] = formatData
-    store[type] = formatData
-    localStorage.setItem('china-pinia-info', JSON.stringify(piniaData))
-    return formatData
-  } catch (e) {
-    console.dir(e)
-    return []
-  }
 }
 
 export async function queryUser(name, pwd) {
@@ -139,7 +110,7 @@ export async function queryByKey({tableName, key, value}) {
   query.equalTo(key, value);
   const data = await query.find()
   if (data.length > 0) {
-    return { ...data[0].attributes }
+    return { ...data[0].attributes, id: data[0].id }
   }
   return null
 }
@@ -149,14 +120,18 @@ export const updataByKey = (key, data) => {
   const user = store.userInfo
   const upData = AV.Object.createWithoutData('user', user.userid);
   if (key === 'likes') {
+    const upLikes = AV.Object.createWithoutData(data.tableName, data.id);
     const likes = new Set(user.likes)
-    if (data.isLike) {
+    if (data.value) {
       likes.add(data.areaKey)
+      upLikes.increment('likes', 1)
     } else {
       likes.delete(data.areaKey)
+      upLikes.increment('likes', -1)
     }
     upData.set('likes', [...likes]);
     upData.save();
+    upLikes.save();
     store.userInfo.likes = [...likes]
   }
   if (key === 'comment') {
@@ -165,12 +140,49 @@ export const updataByKey = (key, data) => {
     upData.save();
     store.userInfo.comment.push(data)
   }
-}
+} 
 
 export function isLogin() {
   const localPiniaData = JSON.parse(localStorage.getItem('china-pinia-info') || '{}')
   const userInfo = localPiniaData.userInfo
   return userInfo
+}
+
+export const getData = async (type) => {
+  const store = useStore()
+  try {
+    const localPiniaData = JSON.parse(localStorage.getItem('china-pinia-info') || '{}')
+    let formatData = []
+    if (type !== 'userInfo') {
+      const query = new AV.Query(type);
+      if(type!=='userInfo'){
+        query.addDescending("likes");
+        query.addDescending("createdAt");
+      }
+      const requestData = await query.find()
+      formatData = requestData.map(item => {
+        return { ...item.attributes, id: item.id}
+      })
+      formatData.map(item => {
+        item.images = imagesDataHash[item.key.split('_')[0]] || [noImg]
+      })
+    } else {
+      const userInfo = localPiniaData.userInfo || null
+      if (userInfo) {
+        formatData = await queryUser(userInfo.username)
+      } else {
+        formatData = null
+      }
+    }
+    const piniaData = localPiniaData
+    piniaData[type] = formatData
+    store[type] = formatData
+    localStorage.setItem('china-pinia-info', JSON.stringify(piniaData))
+    return formatData
+  } catch (e) {
+    console.dir(e)
+    return []
+  }
 }
 
 export const initData = async () => {

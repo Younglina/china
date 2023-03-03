@@ -65,7 +65,7 @@ const handleLike = () => {
     showFailToast('请去我的页面进行登录或注册')
     return
   }
-  updataByKey('likes', { areaKey: detailData.key, isLike: !isLike.value })
+  updataByKey('likes', { areaKey: detailData.key, value: !isLike.value, id: detailData.id, tableName: detailData.dataType })
 }
 </script>
 
