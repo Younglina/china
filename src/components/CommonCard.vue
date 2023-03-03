@@ -32,7 +32,10 @@ const toDetail = (name) => {
         <img class="card-body__image" :src="item.images[0]" alt="">
         <p class="card-body__name">{{ item.name }}</p>
         <p class="card-body__desc">{{ item.desc }}</p>
-        <!-- <p class="card-body__tag">{{ item.tags.join('、') }}</p> -->
+        <div class="card-body__likes">
+          <van-icon name="like-o" color="red" />
+          <span>{{ item.likes || 0 }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -45,6 +48,7 @@ const toDetail = (name) => {
   display: flex;
 
   &__item {
+    position: relative;
     padding: 6px;
   }
 
@@ -56,8 +60,7 @@ const toDetail = (name) => {
   }
 
   &__name,
-  &__desc,
-  &__tag {
+  &__desc{
     margin: 4px 0;
     width: 3rem;
     text-overflow: ellipsis;
@@ -65,10 +68,24 @@ const toDetail = (name) => {
     white-space: nowrap;
   }
 
-  &__desc,
-  &__tag {
+  &__desc{
     font-size: 14px;
     color: #888;
+  }
+
+  &__likes{
+    position: absolute;
+    font-size: 12px;
+    top: 10px;
+    right: 8px;
+    padding: 0px 4px;
+    border-radius: 4px;
+    min-width: 30px;
+    background-color: rgba(0,0,0,.4);
+    span{
+      color: #fff;
+      margin-left: 4px;
+    }
   }
 }
 </style>
