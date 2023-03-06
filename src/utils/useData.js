@@ -115,7 +115,7 @@ export async function queryByKey({tableName, key, value}) {
   return null
 }
 
-export const updataByKey = (key, data) => {
+export const updataByKey = async (key, data) => {
   const store = useStore()
   const user = store.userInfo
   const upData = AV.Object.createWithoutData('user', user.userid);
@@ -130,14 +130,14 @@ export const updataByKey = (key, data) => {
       upLikes.increment('likes', -1)
     }
     upData.set('likes', [...likes]);
-    upData.save();
-    upLikes.save();
+    await upData.save();
+    await upLikes.save();
     store.userInfo.likes = [...likes]
   }
   if (key === 'comment') {
     const comment = user.comment
     upData.set('comment', [...comment, data]);
-    upData.save();
+    await upData.save();
     store.userInfo.comment.push(data)
   }
 } 
