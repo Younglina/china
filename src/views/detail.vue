@@ -88,9 +88,9 @@ const handleLike = () => {
         <div class="detail-info__address">
           <div>
             <p>{{ detailData.address }}</p>
-            <div class="detail-info__cost" v-if="detailData.cost || detailData.openTime">
-              <p><van-icon name="clock-o" />{{ detailData.openTime }}</p>
-              <p class="detail-info__cost__money"><van-icon name="cash-o" />{{ detailData.cost }}</p>
+            <div class="detail-info__cost">
+              <p v-if="detailData.openTime"><van-icon name="clock-o" />{{ detailData.openTime }}</p>
+              <p v-if="detailData.cost" class="detail-info__cost__money"><van-icon name="cash-o" />{{ detailData.cost }}</p>
             </div>
           </div>
           <div class="detail-info__action">

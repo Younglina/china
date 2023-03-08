@@ -1,6 +1,7 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import { showLoadingToast, closeToast } from 'vant'
+import { navCard } from '@/utils/useData.js'
 import { getStore } from '@/store'
 import { ref } from 'vue'
 const router = useRouter()
@@ -18,11 +19,15 @@ const toDetail = (name) => {
 const scenicArea = ref([])
 const store = getStore()
 scenicArea.value = store[dataType]
+const Strs = computed(()=>{
+  const types = navCard.find(item=>item.value===dataType)
+  return types?types.text:''
+})
 </script>
 
 <template>
   <div class="preview-page">
-    <h3>占个位置</h3>
+    <p class="wy-title">特色{{ Strs }}</p>
     <div class="card">
       <div v-for="item in scenicArea" class="card-item" :key="item.name" @click="toDetail(item.key)">
         <img class="card-item__image" :src="item.images[0]" loading="lazy" :alt="item.name"/>
