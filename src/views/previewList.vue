@@ -3,7 +3,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { showLoadingToast, closeToast } from 'vant'
 import { navCard } from '@/utils/useData.js'
 import { getStore } from '@/store'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 const router = useRouter()
 const route = useRoute()
 const dataType = route.query.type

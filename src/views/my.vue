@@ -60,7 +60,7 @@ const active = ref(0);
         <van-empty v-else description="暂无喜欢" />
       </van-tab>
       <van-tab title="我的评论">
-        <CommnetList v-if="likesList.length>0" type="myComment" titleKey="areaName" :datalist="userInfo.comment"/>
+        <CommnetList v-if="userInfo.comment.length>0" type="myComment" titleKey="areaName" :datalist="userInfo.comment"/>
         <van-empty v-else description="暂无评论" />
       </van-tab>
     </van-tabs>
