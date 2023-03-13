@@ -2,7 +2,7 @@
 import { useRouter } from 'vue-router'
 import { navCard } from '@/utils/useData.js'
 import { computed } from 'vue'
-import { showLoadingToast, closeToast } from 'vant'
+import { showLoadingToast } from 'vant'
 
 const Strs = computed(()=>{
   const types = navCard.find(item=>item.value===props.cardType)
@@ -20,7 +20,6 @@ const toDetail = (name) => {
     loadingType: 'spinner',
   });
   router.push({ path: '/detail', query: { name, dataType: props.cardType } })
-  closeToast()
 }
 </script>
 
@@ -28,15 +27,30 @@ const toDetail = (name) => {
   <div class="common-card">
     <p class="wy-title">特色{{ Strs }}</p>
     <div class="card-body">
-      <div v-for="item in cardData.slice(0, 5)" class="card-body__item" :key="item.name" @click="toDetail(item.key)">
-        <img class="card-body__image" :src="item.images[0]" alt="">
-        <p class="card-body__name">{{ item.name }}</p>
-        <p class="card-body__desc">{{ item.desc }}</p>
-        <div class="card-body__likes">
-          <van-icon name="like-o" color="red" />
-          <span>{{ item.likes || 0 }}</span>
+    <template v-if="!cardData || cardData.length===0">
+      <van-skeleton v-for="item in 3" :key="item">
+        <template #template>
+          <div>
+            <van-skeleton-image />
+            <div :style="{ marginTop: '6px' }">
+              <van-skeleton-paragraph/>
+              <van-skeleton-paragraph row-width="60%" />
+            </div>
+          </div>
+        </template>
+      </van-skeleton>
+    </template>
+      <template v-else>
+        <div v-for="item in cardData.slice(0, 5)" class="card-body__item" :key="item.name" @click="toDetail(item.key)">
+          <img class="card-body__image" :src="item.images[0]" alt="">
+          <p class="card-body__name">{{ item.name }}</p>
+          <p class="card-body__desc">{{ item.desc }}</p>
+          <div class="card-body__likes">
+            <van-icon name="like-o" color="red" />
+            <span>{{ item.likes || 0 }}</span>
+          </div>
         </div>
-      </div>
+      </template>
     </div>
   </div>
 </template>

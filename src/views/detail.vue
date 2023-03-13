@@ -5,6 +5,7 @@ import 'vant/es/image-preview/style';
 import { useStore } from '@/store'
 import { guide } from '@/utils/useMap.js'
 import { getCommnet, updataByKey, queryByKey, isLogin } from '@/utils/useData.js'
+import { showLoadingToast, closeToast } from 'vant'
 import { useRouter, useRoute } from 'vue-router'
 import { ref, reactive, onBeforeMount, computed } from 'vue'
 import CommnetList from '@/components/CommentList.vue'
@@ -19,6 +20,12 @@ let aryComment = ref([])
 const { name, dataType } = route.query
 
 onBeforeMount(async () => {
+  closeToast()
+  showLoadingToast({
+    message: '加载中...',
+    duration: 0,
+    loadingType: 'spinner',
+  });
   // 获取对应的数据详情
   const curData = await queryByKey({ tableName: dataType, key: 'key', value: name })
   detailData = curData || {}
@@ -26,6 +33,7 @@ onBeforeMount(async () => {
   const txComment = await getCommnet(name);
   const { data: mockComment } = await Http.get('/commend')
   aryComment.value = txComment.concat(mockComment)
+  closeToast()
 })
 
 const store = useStore()

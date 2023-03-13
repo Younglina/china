@@ -1,19 +1,36 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { initData, tabs } from '@/utils/useData.js'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 initData()
 const route = useRoute()
+const router = useRouter()
 const active = ref('');
+let title = ref("");
+let hasBack = ref(false)
 watch(route, (val) => {
+  hasBack = !!history.state.back
+  title.value = val.meta.title
   active.value = val.name
   if (!tabs.some(t => t.name === val.name)) {
     active.value = ''
   }
-})
+}, {immediate: true})
+
+const onClickLeft = () => {
+  router.back()
+}
 </script>
 
 <template>
+  <van-sticky>
+    <van-nav-bar
+      :title="title"
+      left-text=""
+      :left-arrow="hasBack"
+      @click-left="onClickLeft"
+    />
+</van-sticky>
   <main class="app-main">
     <router-view></router-view>
   </main>
