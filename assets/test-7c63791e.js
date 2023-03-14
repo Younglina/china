@@ -1,0 +1,1 @@
+import{v as a,o,e as n,f as s,a as _,i as c,Y as l,F as r,a0 as i,a1 as u}from"./index-61eb943e.js";const v={class:"message"},p={__name:"test",setup(d){const e=a(!0),t=()=>{e.value=!e.value};return(f,h)=>(o(),n(r,null,[s("button",{onClick:t},"show"),_(l,null,{default:c(()=>[i(s("div",v,"asdf",512),[[u,e.value]])]),_:1})],64))}};export{p as default};
