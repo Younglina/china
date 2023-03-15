@@ -1,14 +1,17 @@
 import { defineStore } from 'pinia'
 
 export const useStore = defineStore('store', {
-  state: () => {
-    return {
+  state: () => ({
       userInfo: null,
       allImages: null,
       scenic: [],
       food: [],
       play: [],
       porcelain: [],
+  }),
+  getters: {
+    getUserInfo(state){
+      return state.userInfo
     }
   }
 })

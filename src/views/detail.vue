@@ -29,10 +29,10 @@ onBeforeMount(async () => {
   // 获取对应的数据详情
   const curData = await queryByKey({ tableName: dataType, key: 'key', value: name })
   detailData = curData || {}
-  loading.value = false
   const txComment = await getCommnet(name);
   const { data: mockComment } = await Http.get('/commend')
   aryComment.value = txComment.concat(mockComment)
+  loading.value = false
   closeToast()
 })
 

@@ -16,7 +16,7 @@ const watchConsole = watch(clickCount, () => {
 let likesList = ref([])
 const store = useStore()
 let userInfo = computed(() => {
-  const info = store.userInfo
+  const info = store.userInfo?{...store.userInfo}:null
   if (info) {
     info.avatar = info.avatar?(ImageBaseUrl + info.avatar):''
     if(info.likes.length>0){
