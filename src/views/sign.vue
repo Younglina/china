@@ -6,7 +6,15 @@ import { showFailToast } from 'vant'
 const store = useStore()
 
 const userForm = reactive({ username: '', password: '', likes: [], comment: [], avatar: 'avatar.jpeg' })
+const validUser = () => {
+  if(!userForm.username || !userForm.password){
+    showFailToast('请填写用户名或密码')
+    return false
+  }
+  return true
+}
 const onSubmit = async () => {
+  if(!validUser()) return
   const user = await queryUser(userForm.username, userForm.password)
   if (!user) {
     showFailToast('用户名或密码错误')
@@ -17,6 +25,7 @@ const onSubmit = async () => {
   }
 }
 const onRegist = async () => {
+  if(!validUser()) return
   const user = await queryUser(userForm.username)
   if (user) {
     showFailToast('当前昵称已存在')
