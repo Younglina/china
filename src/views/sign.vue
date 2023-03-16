@@ -7,25 +7,26 @@ const store = useStore()
 
 const userForm = reactive({ username: '', password: '', likes: [], comment: [], avatar: 'avatar.jpeg' })
 const validUser = () => {
-  if(!userForm.username || !userForm.password){
+  if (!userForm.username || !userForm.password) {
     showFailToast('请填写用户名或密码')
     return false
   }
   return true
 }
 const onSubmit = async () => {
-  if(!validUser()) return
+  if (!validUser()) return
   const user = await queryUser(userForm.username, userForm.password)
   if (!user) {
     showFailToast('用户名或密码错误')
   } else {
     store.userInfo = user
     const states = store.$state
-    localStorage.setItem('china-pinia-info', JSON.stringify({...states, userInfo: user}))
+    localStorage.setItem('china-pinia-info', JSON.stringify({ ...states, userInfo: user }))
   }
 }
 const onRegist = async () => {
-  if(!validUser()) return
+  console.log(!validUser(), userForm.username, userForm.password)
+  if (!validUser()) return
   const user = await queryUser(userForm.username)
   if (user) {
     showFailToast('当前昵称已存在')
@@ -33,7 +34,7 @@ const onRegist = async () => {
     const finishData = await submitData('user', userForm)
     store.userInfo = { ...userForm, userid: finishData.id }
     const states = store.$state
-    localStorage.setItem('china-pinia-info', JSON.stringify({...states, userInfo: {...userForm, userid: finishData.id}}))
+    localStorage.setItem('china-pinia-info', JSON.stringify({ ...states, userInfo: { ...userForm, userid: finishData.id } }))
   }
 }
 </script>
