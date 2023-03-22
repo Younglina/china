@@ -3,7 +3,7 @@ import { ref, reactive } from 'vue'
 import { showToast, showLoadingToast, closeToast, showSuccessToast } from 'vant'
 import { useStore } from '@/store'
 import { useRouter, useRoute } from 'vue-router'
-import { uploadImage, submitData, updataByKey } from '@/utils/useData.js'
+import { uploadImage, submitData } from '@/utils/useData.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -27,22 +27,22 @@ async function setCommnetData() {
     forbidClick: true,
     loadingType: 'spinner',
   });
-  let commentImages = ""
+  let commentImages = []
   const commentDate = new Date()
   if (fileList.value.length) {
     commentImages = fileList.value.map(item => `${areaKey}_${+commentDate}_${item.file.name}`)
   }
+  const datetime =  (commentDate.toLocaleString()).replaceAll('/', '-')
   const commentData = {
     "content": commentObj.content,
-    "datetime": (commentDate.toLocaleString()).replaceAll('/', '-'),
-    "images": commentImages
+    "images": commentImages,
+    datetime
   }
-  await updataByKey('comment', { ...commentData, areaKey, areaName, dataType})
-  await submitData(areaKey, {...commentData, "nickname": store.userInfo.username,})
+  await submitData('verify', {...commentData, datetime, "nickname": store.userInfo.username, "userid": store.userInfo.userid, areaKey, areaName, dataType})
   uploadImage(areaKey, fileList.value, +commentDate)
   closeToast();
   showSuccessToast({
-    message: '提交成功',
+    message: '提交成功，审核后将会显示。',
     duration: 600
   })
   setTimeout(() => {

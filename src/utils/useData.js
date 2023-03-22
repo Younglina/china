@@ -66,15 +66,19 @@ export const uploadImage = async (type, files, timekey) => {
   });
 }
 
-export const getCommnet = async (type) => {
+export const getCommnet = async (type, equal) => {
   const query = new AV.Query(type);
   try {
+    if(equal){
+      query.equalTo(equal.key, equal.value);
+    }
     const requestData = await query.find()
     const formatData = requestData.map(item => {
       return {...item.attributes, id: item.id}
     })
     return formatData
   } catch (e) {
+    console.log(e)
     return []
   }
 }
@@ -85,15 +89,17 @@ export const submitData = async (type, data) => {
     commentObject.set(key, data[key]);
   }
   const finishComment = await commentObject.save()
-  console.log(finishComment, 'comment finish')
   return finishComment
 }
 
-export async function queryUser(name, pwd) {
+export async function queryUser(name, pwd, permission) {
   const query = new AV.Query('user');
   query.equalTo('username', name);
   if (pwd) {
     query.equalTo('password', pwd);
+  }
+  if (permission) {
+    query.containsAll('permission', permission);
   }
   const data = await query.find()
   if (data.length > 0) {
@@ -115,7 +121,9 @@ export async function queryByKey({tableName, key, value}) {
 export const updataByKey = async (key, data) => {
   const store = useStore()
   const user = store.userInfo
-  const upData = AV.Object.createWithoutData('user', user.userid);
+  if(!data.userid) return
+  const upData = AV.Object.createWithoutData('user', data.userid);
+  delete data.userid
   if (key === 'likes') {
     const upLikes = AV.Object.createWithoutData(data.tableName, data.id);
     const likes = new Set(user.likes)
@@ -132,16 +140,24 @@ export const updataByKey = async (key, data) => {
     store.userInfo.likes = [...likes]
   }
   if (key === 'comment') {
-    const comment = user.comment
-    upData.set('comment', [...comment, data]);
+    upData.add('comment', data)
+    // const comment = user.comment
+    // upData.set('comment', [...comment, data]);
     await upData.save();
-    store.userInfo.comment.push(data)
+    // store.userInfo.comment.push(data)
   }
 } 
 
+export const verifyData = async (id) => {
+  const verify = AV.Object.createWithoutData('verify', id);
+  verify.set('isverify', 'yse');
+  await verify.save();
+}
+
 export function isLogin() {
+  const store = useStore()
   const localPiniaData = JSON.parse(localStorage.getItem('china-pinia-info') || '{}')
-  const userInfo = localPiniaData.userInfo
+  const userInfo = localPiniaData.userInfo || store.userInfo
   return userInfo
 }
 
@@ -202,7 +218,7 @@ export const initData = async () => {
     await getData('scenic')
     await getData('food')
     await getData('porcelain')
-    getData('userInfo')
+    await getData('userInfo')
   }
 }
 
