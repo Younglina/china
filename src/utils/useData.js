@@ -161,7 +161,20 @@ export const getData = async (type) => {
         return { ...item.attributes, id: item.id}
       })
       formatData.map(item => {
-        item.images = imagesDataHash[item.key.split('_')[0]] || [noImg]
+        let keys = item.key.split(',')
+        if(keys.length>1){
+          item.images = []
+          keys.map(k=>{
+            if(imagesDataHash[k]){
+              item.images.push(...imagesDataHash[k])
+            }
+          })
+        }else{
+          item.images = imagesDataHash[item.key]
+        }
+        if(!item.images || item.images.length===0){
+          item.images = [noImg]
+        }
       })
     } else {
       const userInfo = localPiniaData.userInfo || null

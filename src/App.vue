@@ -32,7 +32,11 @@ const onClickLeft = () => {
     />
 </van-sticky>
   <main class="app-main">
-    <router-view></router-view>
+    <router-view v-slot="{ Component }">
+      <keep-alive :include="['Home']">
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
   </main>
   <van-tabbar v-model="active">
     <van-tabbar-item v-for="item in tabs" :key="item.name" :name="item.name" :to="item.path" :icon="item.icon">

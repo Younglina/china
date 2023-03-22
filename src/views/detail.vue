@@ -38,7 +38,13 @@ onBeforeMount(async () => {
 
 const store = useStore()
 const isLike = computed(() => store.userInfo ? store.userInfo.likes.includes(detailData.key) : false)
-const dataImages = computed(() => store.allImages ? store.allImages[name] : [])
+const dataImages = computed(() => {
+  if(store[dataType]){
+    let data = store[dataType].find(item=>item.key===name)
+    return data.images
+  }
+  return []
+})
 
 // 地图导航
 const actions = [{ name: '高德地图', type: 'gd' }, { name: '百度地图', type: 'bd' }]
