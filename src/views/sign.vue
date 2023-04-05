@@ -1,5 +1,5 @@
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { submitData, queryUser } from '@/utils/useData.js'
 import { useStore } from '@/store'
 import { showFailToast } from 'vant'
