@@ -24,17 +24,22 @@ const onSubmit = async () => {
     localStorage.setItem('china-pinia-info', JSON.stringify({ ...states, userInfo: user }))
   }
 }
+
+const registLoading = ref(false)
 const onRegist = async () => {
-  console.log(!validUser(), userForm.username, userForm.password)
   if (!validUser()) return
+  if(registLoading.value === true) return
+  registLoading.value = true
   const user = await queryUser(userForm.username)
   if (user) {
     showFailToast('当前昵称已存在')
+    registLoading.value = false
   } else {
     const finishData = await submitData('user', userForm)
     store.userInfo = { ...userForm, userid: finishData.id }
     const states = store.$state
     localStorage.setItem('china-pinia-info', JSON.stringify({ ...states, userInfo: { ...userForm, userid: finishData.id } }))
+    registLoading.value = true
   }
 }
 </script>
@@ -48,7 +53,7 @@ const onRegist = async () => {
           :rules="[{ required: true, message: '请填写密码' }]" />
       </van-cell-group>
       <div class="sign-action">
-        <van-button size="small" round block type="success" @click="onRegist">
+        <van-button size="small" round block type="success" @click="onRegist" :loading="registLoading" loading-text="提交中...">
           注册
         </van-button>
         <van-button size="small" round block type="primary" @click="onSubmit">

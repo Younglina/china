@@ -9,6 +9,7 @@ const route = useRoute()
 const router = useRouter()
 let commentObj = reactive({ content: '' }) // 留言
 const fileList = ref([])
+const submitLoading = ref(false)
 const { areaKey, areaName, dataType } = route.query
 
 async function setCommnetData() {
@@ -21,6 +22,8 @@ async function setCommnetData() {
     showToast('还没有填写内容或图片哦');
     return
   }
+  if(submitLoading.value === true) return
+  submitLoading.value = true
   showLoadingToast({
     message: '提交中...',
     duration: 0,
@@ -43,11 +46,12 @@ async function setCommnetData() {
   closeToast();
   showSuccessToast({
     message: '提交成功，审核后将会显示。',
-    duration: 600
+    duration: 1200
   })
   setTimeout(() => {
     router.go(-1)
-  }, 1000)
+    submitLoading.value = false
+  }, 1300)
 }
 
 </script>
@@ -67,7 +71,7 @@ async function setCommnetData() {
       <van-button block size="small" round type="success" @click="router.go(-1)">
         取消
       </van-button>
-      <van-button block size="small" round type="primary" native-type="submit">
+      <van-button block size="small" round type="primary" native-type="submit" :loading="submitLoading" loading-text="提交中..." >
         提交
       </van-button>
     </div>
