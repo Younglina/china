@@ -4,6 +4,7 @@ import { showToast, showLoadingToast, closeToast, showSuccessToast } from 'vant'
 import { useStore } from '@/store'
 import { useRouter, useRoute } from 'vue-router'
 import { uploadImage, submitData } from '@/utils/useData.js'
+import Http from '@/utils/request.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -22,7 +23,7 @@ async function setCommnetData() {
     showToast('还没有填写内容或图片哦');
     return
   }
-  if(submitLoading.value === true) return
+  if (submitLoading.value === true) return
   submitLoading.value = true
   showLoadingToast({
     message: '提交中...',
@@ -35,13 +36,14 @@ async function setCommnetData() {
   if (fileList.value.length) {
     commentImages = fileList.value.map(item => `${areaKey}_${+commentDate}_${item.file.name}`)
   }
-  const datetime =  (commentDate.toLocaleString()).replaceAll('/', '-')
+  const datetime = (commentDate.toLocaleString()).replaceAll('/', '-')
   const commentData = {
     "content": commentObj.content,
     "images": commentImages,
     datetime
   }
-  await submitData('verify', {...commentData, datetime, "nickname": store.userInfo.username, "userid": store.userInfo.userid, areaKey, areaName, dataType})
+  await submitData('verify', { ...commentData, datetime, "nickname": store.userInfo.username, "userid": store.userInfo.userid, areaKey, areaName, dataType })
+  Http.post(import.meta.env.VITE_MAIL, { subject: `${store.userInfo.username}-评论-${areaName}`, text: commentObj.content }, { headers: { 'Content-Type': 'application/json' } })
   uploadImage(areaKey, fileList.value, +commentDate)
   closeToast();
   showSuccessToast({
@@ -71,7 +73,8 @@ async function setCommnetData() {
       <van-button block size="small" round type="success" @click="router.go(-1)">
         取消
       </van-button>
-      <van-button block size="small" round type="primary" native-type="submit" :loading="submitLoading" loading-text="提交中..." >
+      <van-button block size="small" round type="primary" native-type="submit" :loading="submitLoading"
+        loading-text="提交中...">
         提交
       </van-button>
     </div>
