@@ -5,7 +5,7 @@ import { useStore } from '@/store'
 import { useRouter, useRoute } from 'vue-router'
 import { uploadImage, submitData } from '@/utils/useData.js'
 import Http from '@/utils/request.js'
-
+import axios from 'axios'
 const route = useRoute()
 const router = useRouter()
 let commentObj = reactive({ content: '' }) // 留言
@@ -14,6 +14,7 @@ const submitLoading = ref(false)
 const { areaKey, areaName, dataType } = route.query
 
 async function setCommnetData() {
+  
   const store = useStore()
   if (!store.userInfo) {
     showToast('请去我的页面进行登录或注册');
@@ -43,7 +44,10 @@ async function setCommnetData() {
     datetime
   }
   await submitData('verify', { ...commentData, datetime, "nickname": store.userInfo.username, "userid": store.userInfo.userid, areaKey, areaName, dataType })
-  Http.post(import.meta.env.VITE_MAIL, { subject: `${store.userInfo.username}-评论-${areaName}`, text: commentObj.content }, { headers: { 'Content-Type': 'application/json' } })
+  axios.post(import.meta.env.VITE_MAIL, { subject: `${store.userInfo.username}-评论-${areaName}`, text: commentObj.content },)
+  .then(res=>{
+    console.log(res)
+  })
   uploadImage(areaKey, fileList.value, +commentDate)
   closeToast();
   showSuccessToast({
