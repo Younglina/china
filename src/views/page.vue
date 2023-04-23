@@ -44,8 +44,14 @@ async function setCommnetData() {
     datetime
   }
   await submitData('verify', { ...commentData, datetime, "nickname": store.userInfo.username, "userid": store.userInfo.userid, areaKey, areaName, dataType })
-  axios.post(import.meta.env.VITE_MAIL, { subject: `${store.userInfo.username}-评论-${areaName}`, text: commentObj.content },)
-  .then(res=>{
+  // axios.post(import.meta.env.VITE_MAIL, { subject: `${store.userInfo.username}-评论-${areaName}`, text: commentObj.content },)
+  // .then(res=>{
+  //   console.log(res)
+  // })
+  Http.post(import.meta.env.VITE_MAIL, 
+    { subject: `${store.userInfo.username}-评论-${areaName}`, text: commentObj.content }, 
+    { headers: { 'Content-Type': 'text/plain' } 
+  }).then(res=>{
     console.log(res)
   })
   uploadImage(areaKey, fileList.value, +commentDate)
